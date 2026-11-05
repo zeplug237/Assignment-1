@@ -1,394 +1,200 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f5f7fb">
-  <title>Fieldmark | Worker attendance</title>
+  <title>GMAX | Worker Attendance</title>
   <style>
     :root {
-      color-scheme: light;
-      --ink: #17233b;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+      color: #17233b;
+      background: #f5f7fb;
+      font-synthesis: none;
       --muted: #748099;
       --line: #e7ebf2;
-      --paper: #fff;
-      --canvas: #f5f7fb;
       --blue: #4169e1;
-      --blue-dark: #3156c6;
       --green: #15966a;
-      --shadow: 0 12px 32px rgba(27, 44, 80, .06);
     }
-
     * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      background: var(--canvas);
-      color: var(--ink);
-      font: 15px/1.5 Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    }
-
+    body { margin: 0; min-width: 320px; }
     button, input, select { font: inherit; }
     button { cursor: pointer; }
-
-    .layout { min-height: 100vh; }
     .sidebar {
-      position: fixed;
-      inset: 0 auto 0 0;
-      display: flex;
-      width: 246px;
-      flex-direction: column;
-      padding: 27px 18px;
-      background: #fff;
-      border-right: 1px solid var(--line);
+      position: fixed; inset: 0 auto 0 0; width: 235px; padding: 27px 19px;
+      background: white; border-right: 1px solid var(--line);
     }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 11px;
-      padding: 0 9px;
-      color: var(--ink);
-      font-size: 19px;
-      font-weight: 750;
-      letter-spacing: -.5px;
-    }
-
+    .brand { display: flex; align-items: center; gap: 11px; font-size: 20px; font-weight: 800; letter-spacing: -.5px; }
     .brand-mark {
-      display: grid;
-      width: 34px;
-      height: 34px;
-      place-items: center;
-      border-radius: 11px;
-      background: #e9efff;
-      color: var(--blue);
+      display: grid; width: 36px; height: 36px; place-items: center;
+      border-radius: 11px; background: #e9efff; color: var(--blue);
     }
-
-    .nav-label {
-      margin: 42px 10px 11px;
-      color: #a0a9ba;
-      font-size: 10px;
-      font-weight: 750;
-      letter-spacing: 1.15px;
-      text-transform: uppercase;
-    }
-
-    .nav-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin: 2px 0;
-      padding: 11px 12px;
-      border-radius: 9px;
-      color: #6b7891;
-      font-size: 13px;
-      font-weight: 600;
-    }
-
-    .nav-item.active { background: #edf2ff; color: var(--blue); }
-    .nav-item svg { width: 18px; height: 18px; }
-
-    .sidebar-foot {
-      margin-top: auto;
-      padding: 15px 12px 0;
-      border-top: 1px solid var(--line);
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    main { max-width: 1500px; margin-left: 246px; padding: 35px 43px 48px; }
-    .topbar { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin-bottom: 30px; }
-    .eyebrow { margin: 0 0 4px; color: var(--muted); font-size: 12px; }
+    .brand-mark svg { width: 22px; }
+    .nav-label { margin: 42px 10px 12px; color: #a0a9ba; font-size: 10px; font-weight: 750; letter-spacing: 1px; text-transform: uppercase; }
+    .nav-link { display: flex; align-items: center; gap: 12px; padding: 11px 12px; border-radius: 9px; color: #65728b; font-size: 13px; font-weight: 600; }
+    .nav-link.active { background: #edf2ff; color: var(--blue); }
+    .nav-link svg { width: 18px; height: 18px; }
+    .sidebar-foot { position: absolute; bottom: 24px; color: var(--muted); font-size: 11px; }
+    main { max-width: 1500px; margin-left: 235px; padding: 34px 42px 48px; }
+    .topbar { display: flex; align-items: center; justify-content: space-between; gap: 15px; margin-bottom: 27px; }
+    .eyebrow { margin: 0 0 3px; color: var(--muted); font-size: 12px; }
     h1 { margin: 0; font-size: 26px; letter-spacing: -.7px; }
-    .top-actions { display: flex; align-items: center; gap: 12px; }
-    .date-pill, .profile {
-      display: flex;
-      align-items: center;
-      gap: 9px;
-      padding: 9px 13px;
-      border: 1px solid var(--line);
-      border-radius: 9px;
-      background: #fff;
-      color: #52617b;
-      font-size: 12px;
-      font-weight: 600;
-    }
-    .profile { border: 0; background: transparent; padding-right: 0; }
-    .avatar {
-      display: grid;
-      width: 33px;
-      height: 33px;
-      place-items: center;
-      border-radius: 50%;
-      background: #e8edfb;
-      color: #5265a7;
-      font-size: 11px;
-      font-weight: 750;
-    }
-
-    .stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-bottom: 24px; }
-    .card, .stat-card { border: 1px solid var(--line); border-radius: 12px; background: var(--paper); box-shadow: var(--shadow); }
-    .stat-card { min-height: 119px; padding: 18px 20px; }
-    .stat-head { display: flex; align-items: center; justify-content: space-between; color: var(--muted); font-size: 12px; font-weight: 600; }
-    .stat-icon { display: grid; width: 31px; height: 31px; place-items: center; border-radius: 9px; background: #f0f3fa; color: #62728f; }
-    .stat-icon svg { width: 16px; height: 16px; }
-    .stat-value { margin-top: 11px; font-size: 25px; font-weight: 750; letter-spacing: -.6px; }
-    .stat-note { margin-left: 7px; color: var(--muted); font-size: 11px; font-weight: 500; letter-spacing: 0; }
-
-    .content-grid { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(300px, .85fr); gap: 20px; align-items: start; }
+    .top-meta { display: flex; align-items: center; gap: 9px; color: #52617b; font-size: 12px; }
+    .date { padding: 9px 12px; border: 1px solid var(--line); border-radius: 8px; background: white; }
+    .avatar { display: grid; width: 33px; height: 33px; place-items: center; border-radius: 50%; background: #e8edfb; color: #5265a7; font-size: 11px; font-weight: 750; }
+    .stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 15px; margin-bottom: 22px; }
+    .stat, .card { border: 1px solid var(--line); border-radius: 12px; background: #fff; box-shadow: 0 10px 28px #1b2c500d; }
+    .stat { min-height: 112px; padding: 17px 19px; }
+    .stat-label { color: var(--muted); font-size: 12px; font-weight: 600; }
+    .stat-value { margin-top: 8px; font-size: 26px; font-weight: 750; letter-spacing: -.6px; }
+    .grid { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(290px, .85fr); gap: 19px; align-items: start; }
     .card { overflow: hidden; }
-    .card-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 19px 21px; border-bottom: 1px solid var(--line); }
-    h2 { margin: 0; font-size: 15px; letter-spacing: -.15px; }
-    .subheading { margin: 3px 0 0; color: var(--muted); font-size: 11px; }
-    .primary-btn, .secondary-btn, .icon-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      border: 0;
-      border-radius: 8px;
-      font-size: 12px;
-      font-weight: 650;
-      transition: background .15s, transform .15s;
-    }
-    .primary-btn { min-height: 37px; padding: 0 13px; background: var(--blue); color: #fff; }
-    .primary-btn:hover { background: var(--blue-dark); }
-    .secondary-btn { min-height: 34px; padding: 0 11px; border: 1px solid var(--line); background: #fff; color: #53617a; }
-    .secondary-btn:hover { background: #f7f8fb; }
-    .primary-btn svg, .secondary-btn svg { width: 15px; height: 15px; }
-    .search-wrap { position: relative; padding: 15px 20px 10px; }
-    .search-wrap svg { position: absolute; top: 25px; left: 32px; width: 15px; color: #9aa5b7; }
-    .search-wrap input {
-      width: 100%;
-      height: 37px;
-      padding: 0 12px 0 35px;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      outline: none;
-      color: var(--ink);
-      font-size: 12px;
-    }
-    input:focus, select:focus { border-color: #91a8f4; box-shadow: 0 0 0 3px rgba(65, 105, 225, .1); }
-    .table-wrap { overflow-x: auto; }
+    .card-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 18px 20px; border-bottom: 1px solid var(--line); }
+    h2 { margin: 0; font-size: 15px; }
+    .hint { margin: 3px 0 0; color: var(--muted); font-size: 11px; }
+    .btn { display: inline-flex; min-height: 37px; align-items: center; justify-content: center; gap: 7px; padding: 0 13px; border: 0; border-radius: 8px; background: var(--blue); color: #fff; font-size: 12px; font-weight: 650; }
+    .btn:hover { background: #3156c6; }
+    .search { width: calc(100% - 40px); height: 37px; margin: 15px 20px 10px; padding: 0 11px; border: 1px solid var(--line); border-radius: 8px; outline: 0; font-size: 12px; }
+    .search:focus, input:focus, select:focus { border-color: #91a8f4; box-shadow: 0 0 0 3px #4169e11a; }
+    .table-scroll { overflow-x: auto; }
     table { width: 100%; border-collapse: collapse; text-align: left; }
-    th { padding: 10px 20px; background: #fafbfc; color: #909aae; font-size: 10px; font-weight: 700; letter-spacing: .55px; text-transform: uppercase; }
-    td { padding: 13px 20px; border-top: 1px solid #f0f2f6; color: #5c6880; font-size: 12px; white-space: nowrap; }
-    .worker-name { display: flex; align-items: center; gap: 10px; color: var(--ink); font-weight: 650; }
-    .worker-avatar { display: grid; width: 32px; height: 32px; flex: 0 0 32px; place-items: center; border-radius: 50%; background: #f0ebff; color: #7153b4; font-size: 10px; font-weight: 750; }
-    .worker-avatar.aqua { background: #e4f6f1; color: #248b6d; }
-    .worker-avatar.peach { background: #fff0e8; color: #c27a4d; }
-    .worker-avatar.blue { background: #e8efff; color: #5270c4; }
-    .status { display: inline-flex; align-items: center; gap: 6px; color: #7b879a; font-size: 11px; }
-    .status::before { width: 7px; height: 7px; border-radius: 50%; background: #bbc3d0; content: ""; }
-    .status.verified { color: #16865f; }
-    .status.verified::before { background: #21ab79; }
-    .status.not-enrolled::before { background: #e9a845; }
-    .row-action { border: 0; background: transparent; color: var(--blue); font-size: 11px; font-weight: 650; }
-    .empty { padding: 27px 20px; color: var(--muted); text-align: center; font-size: 12px; }
-
-    .kiosk { padding: 21px; }
-    .kiosk-status { display: flex; align-items: center; gap: 8px; margin: 1px 0 21px; color: #af7021; font-size: 11px; font-weight: 650; }
-    .kiosk-status span { width: 7px; height: 7px; border-radius: 50%; background: #e9a845; }
-    .scanner {
-      display: grid;
-      width: 95px;
-      height: 95px;
-      margin: 0 auto 16px;
-      place-items: center;
-      border: 1px solid #e1e8fb;
-      border-radius: 50%;
-      background: #f5f7ff;
-      color: var(--blue);
-    }
-    .scanner svg { width: 40px; height: 40px; }
-    .kiosk h3 { margin: 0; text-align: center; font-size: 15px; }
-    .kiosk-copy { max-width: 265px; margin: 6px auto 18px; color: var(--muted); text-align: center; font-size: 11px; }
-    .kiosk .primary-btn { width: 100%; min-height: 41px; }
-    .secure-note { margin-top: 15px; padding: 12px; border-radius: 8px; background: #f7f8fb; color: #79849a; font-size: 10px; line-height: 1.55; }
-    .secure-note strong { color: #5d6980; }
-    .activity { margin-top: 20px; }
-    .activity-title { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
-    .activity-title h2 { font-size: 13px; }
-    .activity-list { display: grid; gap: 12px; }
-    .activity-item { display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 11px; }
-    .activity-person { display: flex; align-items: center; gap: 9px; color: #4e5b73; font-weight: 600; }
-    .activity-person .worker-avatar { width: 27px; height: 27px; flex-basis: 27px; }
+    th { padding: 10px 18px; background: #fafbfc; color: #909aae; font-size: 10px; letter-spacing: .5px; text-transform: uppercase; }
+    td { padding: 12px 18px; border-top: 1px solid #f0f2f6; color: #5c6880; font-size: 12px; white-space: nowrap; }
+    .worker { display: flex; align-items: center; gap: 9px; color: #17233b; font-weight: 650; }
+    .worker-avatar { display: grid; width: 31px; height: 31px; flex: 0 0 31px; place-items: center; border-radius: 50%; background: #e8efff; color: #5270c4; font-size: 10px; font-weight: 750; }
+    .sub { display: block; color: #9aa3b3; font-size: 10px; font-weight: 500; }
+    .status { color: #929cad; font-size: 11px; }
+    .status::before { display: inline-block; width: 7px; height: 7px; margin-right: 6px; border-radius: 50%; background: #bbc3d0; content: ""; }
+    .status.good { color: #16865f; }
+    .status.good::before { background: #21ab79; }
+    .status.pending::before { background: #e9a845; }
+    .empty { padding: 23px 15px; color: var(--muted); text-align: center; font-size: 12px; }
+    .kiosk { padding: 19px 20px 20px; }
+    .notice { display: flex; align-items: center; gap: 7px; margin-bottom: 19px; color: #af7021; font-size: 11px; font-weight: 650; }
+    .notice::before { width: 7px; height: 7px; border-radius: 50%; background: #e9a845; content: ""; }
+    .fingerprint { display: grid; width: 87px; height: 87px; margin: 0 auto 13px; place-items: center; border: 1px solid #e1e8fb; border-radius: 50%; background: #f5f7ff; color: var(--blue); }
+    .fingerprint svg { width: 39px; }
+    .kiosk h3 { margin: 0; text-align: center; font-size: 14px; }
+    .kiosk-copy { max-width: 270px; margin: 6px auto 17px; color: var(--muted); text-align: center; font-size: 11px; }
+    .kiosk .btn { width: 100%; min-height: 40px; }
+    .privacy { margin-top: 14px; padding: 11px; border-radius: 8px; background: #f7f8fb; color: #79849a; font-size: 10px; line-height: 1.55; }
+    .activity { margin-top: 19px; }
+    .activity-heading { margin: 0 0 11px; font-size: 13px; }
+    .activity-list { display: grid; gap: 12px; padding: 14px; }
+    .activity-row { display: flex; align-items: center; justify-content: space-between; gap: 9px; color: #4e5b73; font-size: 11px; }
+    .activity-who { display: flex; align-items: center; gap: 8px; }
+    .activity-who .worker-avatar { width: 27px; height: 27px; flex-basis: 27px; }
     .activity-time { color: var(--muted); font-size: 10px; }
-
-    dialog { width: min(440px, calc(100% - 32px)); padding: 0; border: 1px solid var(--line); border-radius: 13px; box-shadow: 0 22px 70px rgba(20, 34, 65, .2); }
-    dialog::backdrop { background: rgba(17, 28, 49, .42); backdrop-filter: blur(2px); }
-    .dialog-head { display: flex; align-items: flex-start; justify-content: space-between; padding: 21px 22px 16px; border-bottom: 1px solid var(--line); }
-    .dialog-head h2 { font-size: 17px; }
-    .dialog-body { display: grid; gap: 14px; padding: 19px 22px 22px; }
+    dialog { width: min(420px, calc(100% - 32px)); padding: 0; border: 1px solid var(--line); border-radius: 12px; box-shadow: 0 22px 70px #14224133; }
+    dialog::backdrop { background: #111c31a6; }
+    .dialog-head { padding: 19px 21px; border-bottom: 1px solid var(--line); }
+    .dialog-body { display: grid; gap: 13px; padding: 18px 21px 21px; }
     .field { display: grid; gap: 6px; }
     .field label { color: #59667e; font-size: 11px; font-weight: 650; }
-    .field input, .field select { width: 100%; height: 39px; padding: 0 11px; border: 1px solid var(--line); border-radius: 7px; outline: none; background: white; color: var(--ink); font-size: 12px; }
-    .dialog-actions { display: flex; justify-content: flex-end; gap: 8px; padding-top: 6px; }
-    .icon-btn { width: 31px; height: 31px; border: 1px solid var(--line); background: white; color: #718099; font-size: 18px; }
-    .toast { position: fixed; right: 24px; bottom: 24px; z-index: 3; max-width: min(390px, calc(100vw - 32px)); padding: 13px 16px; border: 1px solid var(--line); border-radius: 9px; background: #fff; box-shadow: var(--shadow); color: #43516b; font-size: 12px; opacity: 0; pointer-events: none; transform: translateY(8px); transition: .2s ease; }
+    .field input, .field select { height: 38px; padding: 0 10px; border: 1px solid var(--line); border-radius: 7px; background: white; font-size: 12px; outline: 0; }
+    .actions { display: flex; justify-content: flex-end; gap: 8px; padding-top: 5px; }
+    .cancel { min-height: 36px; padding: 0 12px; border: 1px solid var(--line); border-radius: 8px; background: white; color: #53617a; font-size: 12px; }
+    .toast { position: fixed; right: 20px; bottom: 20px; max-width: min(380px, calc(100vw - 40px)); padding: 12px 15px; border: 1px solid var(--line); border-radius: 9px; background: white; box-shadow: 0 10px 28px #1b2c501a; color: #43516b; font-size: 12px; opacity: 0; pointer-events: none; transform: translateY(7px); transition: .2s; }
     .toast.show { opacity: 1; transform: translateY(0); }
-    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
-
     @media (max-width: 1050px) {
-      .sidebar { width: 205px; }
-      main { margin-left: 205px; padding: 29px 25px 40px; }
-      .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .content-grid { grid-template-columns: 1fr; }
+      .sidebar { width: 200px; } main { margin-left: 200px; padding: 28px 24px; }
+      .stats { grid-template-columns: repeat(2, 1fr); } .grid { grid-template-columns: 1fr; }
     }
-    @media (max-width: 700px) {
-      .sidebar { position: static; width: auto; height: auto; padding: 14px 17px; border-right: 0; border-bottom: 1px solid var(--line); }
-      .brand { padding: 0; }
-      .nav-label, .nav-item:not(.active), .sidebar-foot { display: none; }
-      .nav-item.active { width: max-content; margin: 10px 0 0; padding: 7px 10px; font-size: 11px; }
-      main { margin: 0; padding: 24px 16px 35px; }
-      .topbar { align-items: flex-start; margin-bottom: 20px; }
-      .top-actions { gap: 6px; }
-      .date-pill { padding: 8px; font-size: 10px; }
-      .profile { display: none; }
-      h1 { font-size: 22px; }
-      .stats { gap: 10px; margin-bottom: 16px; }
-      .stat-card { min-height: 105px; padding: 14px; }
-      .stat-value { font-size: 22px; }
-      .stat-note { display: block; margin: 0; font-size: 10px; }
-      .card-header { padding: 16px; }
-      th, td { padding-right: 13px; padding-left: 13px; }
-      .search-wrap { padding-right: 14px; padding-left: 14px; }
-      .search-wrap svg { left: 26px; }
+    @media (max-width: 650px) {
+      .sidebar { position: static; width: auto; padding: 13px 16px; }
+      .nav-label, .sidebar-foot { display: none; } .nav-link { width: max-content; margin-top: 10px; padding: 7px 10px; }
+      main { margin: 0; padding: 22px 15px 32px; } .topbar { align-items: flex-start; margin-bottom: 18px; }
+      .date { font-size: 10px; } .stats { gap: 9px; margin-bottom: 15px; }
+      .stat { min-height: 95px; padding: 13px; } .stat-value { font-size: 23px; }
+      .card-header { padding: 15px; } .search { width: calc(100% - 30px); margin: 13px 15px 9px; }
+      th, td { padding-right: 12px; padding-left: 12px; }
     }
-    @media (max-width: 390px) {
-      .top-actions .date-pill { display: none; }
-      .stats { grid-template-columns: 1fr 1fr; }
-      .card-header .primary-btn { padding: 0 9px; font-size: 11px; }
-    }
+    @media (max-width: 380px) { .date { display: none; } }
   </style>
 </head>
 <body>
-  <div class="layout">
-    <aside class="sidebar" aria-label="Main navigation">
-      <div class="brand">
-        <span class="brand-mark" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" width="21" height="21" stroke="currentColor" stroke-width="2">
-            <path d="M7 3h10M7 21h10M5 6c0 3 2 4 2 6s-2 3-2 6M19 6c0 3-2 4-2 6s2 3 2 6M12 7v10M9 9c0 2 1 2 1 3s-1 1-1 3M15 9c0 2-1 2-1 3s1 1 1 3" stroke-linecap="round"/>
-          </svg>
-        </span>
-        Fieldmark
-      </div>
-      <div class="nav-label">Workspace</div>
-      <div class="nav-item active" aria-current="page">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M16 2v4M8 2v4M3 10h18m-13 4h3m-3 3h7"/></svg>
-        Attendance
-      </div>
-      <div class="nav-item">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2m16 0v-2a4 4 0 0 0-3-3.87M10 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm8-7.87a4 4 0 0 1 0 7.75"/></svg>
-        Workers
-      </div>
-      <div class="nav-item">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19V5m0 14h17M8 15l4-4 3 2 5-6"/></svg>
-        Reports
-      </div>
-      <div class="nav-item">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06-1.6 2.77-.08-.02a1.7 1.7 0 0 0-1.83.5l-.05.07h-3.2l-.04-.08a1.7 1.7 0 0 0-1.58-1l-.25.02-.08.02-1.6-2.77.06-.06A1.7 1.7 0 0 0 9.9 14.5l-.08-.04v-3.2l.08-.04a1.7 1.7 0 0 0 .94-1.83l-.02-.08 2.77-1.6.06.06a1.7 1.7 0 0 0 1.88.34l.08-.04h3.2l.04.08a1.7 1.7 0 0 0 1.58 1l.25-.02.08-.02 1.6 2.77-.06.06A1.7 1.7 0 0 0 22 13.8l.08.04v3.2l-.08.04A1.7 1.7 0 0 0 21 18.7"/></svg>
-        Settings
-      </div>
-      <div class="sidebar-foot">Attendance workspace<br>Local demo</div>
-    </aside>
+  <aside class="sidebar" aria-label="Main navigation">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M7 3h10M7 21h10M5 6c0 3 2 4 2 6s-2 3-2 6M19 6c0 3-2 4-2 6s2 3 2 6M12 7v10M9 9c0 2 1 2 1 3s-1 1-1 3M15 9c0 2-1 2-1 3s1 1 1 3"/>
+        </svg>
+      </span>
+      GMAX
+    </div>
+    <div class="nav-label">Workspace</div>
+    <div class="nav-link active" aria-current="page">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M16 2v4M8 2v4M3 10h18m-13 4h3m-3 3h7"/></svg>
+      Attendance
+    </div>
+    <div class="sidebar-foot">Worker attendance workspace</div>
+  </aside>
 
-    <main>
-      <header class="topbar">
-        <div>
-          <p class="eyebrow">Good morning, Admin</p>
-          <h1>Attendance</h1>
-        </div>
-        <div class="top-actions">
-          <div class="date-pill">
-            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-            <span id="todayDate"></span>
-          </div>
-          <div class="profile"><span class="avatar">AD</span> Admin</div>
-        </div>
-      </header>
+  <main>
+    <header class="topbar">
+      <div><p class="eyebrow">Good morning, Admin</p><h1>Attendance</h1></div>
+      <div class="top-meta"><span class="date" id="todayDate"></span><span class="avatar">AD</span> Admin</div>
+    </header>
 
-      <section class="stats" aria-label="Today's attendance summary">
-        <article class="stat-card">
-          <div class="stat-head"><span>Total workers</span><span class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2m16 0v-2a4 4 0 0 0-3-3.87M10 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"/></svg></span></div>
-          <div class="stat-value" id="totalWorkers">0</div>
-        </article>
-        <article class="stat-card">
-          <div class="stat-head"><span>Present today</span><span class="stat-icon" style="background:#e8f7f1;color:#15966a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m5 12 4 4L19 6"/></svg></span></div>
-          <div class="stat-value" id="presentWorkers">0</div>
-        </article>
-        <article class="stat-card">
-          <div class="stat-head"><span>Not yet in</span><span class="stat-icon" style="background:#fff5e8;color:#cf913a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span></div>
-          <div class="stat-value" id="notInWorkers">0</div>
-        </article>
-        <article class="stat-card">
-          <div class="stat-head"><span>Biometrics enrolled</span><span class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 3h10M7 21h10M5 6c0 3 2 4 2 6s-2 3-2 6M19 6c0 3-2 4-2 6s2 3 2 6M12 7v10"/></svg></span></div>
-          <div class="stat-value"><span id="enrolledWorkers">0</span><span class="stat-note">device integration needed</span></div>
-        </article>
+    <section class="stats" aria-label="Today's attendance summary">
+      <article class="stat"><div class="stat-label">Total workers</div><div class="stat-value" id="totalWorkers">0</div></article>
+      <article class="stat"><div class="stat-label">Present today</div><div class="stat-value" id="presentWorkers">0</div></article>
+      <article class="stat"><div class="stat-label">Not yet in</div><div class="stat-value" id="notInWorkers">0</div></article>
+      <article class="stat"><div class="stat-label">Biometrics enrolled</div><div class="stat-value" id="enrolledWorkers">0</div></article>
+    </section>
+
+    <div class="grid">
+      <section class="card" aria-labelledby="workersHeading">
+        <div class="card-header">
+          <div><h2 id="workersHeading">Workers</h2><p class="hint">Manage your team and enrollment</p></div>
+          <button class="btn" id="addWorkerBtn" type="button">＋ Add worker</button>
+        </div>
+        <label class="sr-only" for="searchInput">Search workers</label>
+        <input class="search" id="searchInput" type="search" placeholder="Search by name, ID, or department">
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>Worker</th><th>Department</th><th>Biometric</th><th>Today</th></tr></thead>
+            <tbody id="workerRows"></tbody>
+          </table>
+          <div class="empty" id="emptyState">No workers found. Add your first worker to get started.</div>
+        </div>
       </section>
 
-      <div class="content-grid">
-        <section class="card" aria-labelledby="workersHeading">
-          <div class="card-header">
-            <div><h2 id="workersHeading">Workers</h2><p class="subheading">Manage your team and their enrollment</p></div>
-            <button class="primary-btn" id="addWorkerBtn" type="button">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
-              Add worker
-            </button>
-          </div>
-          <label class="search-wrap">
-            <span class="sr-only">Search workers</span>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
-            <input id="searchInput" type="search" placeholder="Search by name, ID, or department">
-          </label>
-          <div class="table-wrap">
-            <table>
-              <thead><tr><th>Worker</th><th>Department</th><th>Biometric</th><th>Today</th></tr></thead>
-              <tbody id="workerRows"></tbody>
-            </table>
-            <div class="empty" id="emptyState" hidden>No workers found. Add your first worker to get started.</div>
+      <div>
+        <section class="card" aria-labelledby="kioskHeading">
+          <div class="card-header"><div><h2 id="kioskHeading">Biometric kiosk</h2><p class="hint">Worker check-in station</p></div></div>
+          <div class="kiosk">
+            <div class="notice">Biometric service not connected</div>
+            <div class="fingerprint" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.55" stroke-linecap="round">
+                <path d="M7 3h10M7 21h10M5 6c0 3 2 4 2 6s-2 3-2 6M19 6c0 3-2 4-2 6s2 3 2 6M12 7v10M9 9c0 2 1 2 1 3s-1 1-1 3M15 9c0 2-1 2-1 3s1 1 1 3"/>
+              </svg>
+            </div>
+            <h3>Ready for secure setup</h3>
+            <p class="kiosk-copy">Connect a WebAuthn-compatible service to enroll workers and record verified attendance.</p>
+            <button class="btn" id="connectBtn" type="button">Set up biometric service</button>
+            <div class="privacy"><strong>Privacy first.</strong> This page does not collect or store fingerprint images. Biometric verification requires a secure server and compatible device.</div>
           </div>
         </section>
-
-        <div>
-          <section class="card" aria-labelledby="kioskHeading">
-            <div class="card-header">
-              <div><h2 id="kioskHeading">Biometric kiosk</h2><p class="subheading">Worker check-in station</p></div>
-            </div>
-            <div class="kiosk">
-              <div class="kiosk-status"><span></span> Biometric service not connected</div>
-              <div class="scanner" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.55"><path d="M7 3h10M7 21h10M5 6c0 3 2 4 2 6s-2 3-2 6M19 6c0 3-2 4-2 6s2 3 2 6M12 7v10M9 9c0 2 1 2 1 3s-1 1-1 3M15 9c0 2-1 2-1 3s1 1 1 3" stroke-linecap="round"/></svg>
-              </div>
-              <h3>Ready for a secure setup</h3>
-              <p class="kiosk-copy">Connect a WebAuthn-compatible service to enroll workers and record verified attendance.</p>
-              <button class="primary-btn" id="connectBtn" type="button">Set up biometric service</button>
-              <div class="secure-note"><strong>Privacy first.</strong> This page never collects or stores fingerprint images. Real biometric verification requires a secure server and a compatible device.</div>
-            </div>
-          </section>
-          <section class="activity" aria-labelledby="activityHeading">
-            <div class="activity-title"><h2 id="activityHeading">Recent activity</h2><span class="subheading" id="activityDate"></span></div>
-            <div class="card" style="padding:15px">
-              <div class="activity-list" id="activityList"></div>
-              <div class="empty" id="activityEmpty">No attendance recorded today.</div>
-            </div>
-          </section>
-        </div>
+        <section class="activity" aria-labelledby="activityHeading">
+          <h2 class="activity-heading" id="activityHeading">Recent activity</h2>
+          <div class="card">
+            <div class="activity-list" id="activityList"></div>
+            <div class="empty" id="activityEmpty">No attendance recorded today.</div>
+          </div>
+        </section>
       </div>
-    </main>
-  </div>
+    </div>
+  </main>
 
   <dialog id="workerDialog" aria-labelledby="dialogTitle">
     <form id="workerForm">
-      <div class="dialog-head">
-        <div><h2 id="dialogTitle">Add worker</h2><p class="subheading">Enter the worker's details to add them to your team.</p></div>
-        <button class="icon-btn" type="button" id="closeDialog" aria-label="Close dialog">×</button>
-      </div>
+      <div class="dialog-head"><h2 id="dialogTitle">Add worker</h2><p class="hint">Enter the worker's details to add them to your team.</p></div>
       <div class="dialog-body">
         <div class="field"><label for="workerName">Full name</label><input id="workerName" name="name" autocomplete="name" required maxlength="80" placeholder="e.g. Alex Morgan"></div>
-        <div class="field"><label for="workerId">Worker ID</label><input id="workerId" name="workerId" required maxlength="32" placeholder="e.g. WM-1042"></div>
+        <div class="field"><label for="workerId">Worker ID</label><input id="workerId" name="workerId" required maxlength="32" placeholder="e.g. GM-1042"></div>
         <div class="field"><label for="workerDepartment">Department</label><select id="workerDepartment" name="department" required><option value="" disabled selected>Select a department</option><option>Operations</option><option>Warehouse</option><option>Production</option><option>Facilities</option><option>Security</option><option>Other</option></select></div>
-        <div class="dialog-actions"><button class="secondary-btn" type="button" id="cancelDialog">Cancel</button><button class="primary-btn" type="submit">Add worker</button></div>
+        <div class="actions"><button class="cancel" id="cancelDialog" type="button">Cancel</button><button class="btn" type="submit">Add worker</button></div>
       </div>
     </form>
   </dialog>
@@ -396,129 +202,122 @@
 
   <script>
     (() => {
-      const WORKERS_KEY = "fieldmark-workers-v1";
-      const EVENTS_KEY = "fieldmark-attendance-v1";
-      const dateLabel = new Intl.DateTimeFormat(undefined, { weekday: "short", month: "short", day: "numeric", year: "numeric" });
-      const timeLabel = new Intl.DateTimeFormat(undefined, { hour: "numeric", minute: "2-digit" });
-      const todayKey = new Date().toLocaleDateString("en-CA");
-      const colors = ["", "aqua", "peach", "blue"];
-      const byId = (id) => document.getElementById(id);
-      let workers = readStore(WORKERS_KEY, []);
-      let events = readStore(EVENTS_KEY, []);
+      const WORKERS_KEY = "gmax-workers-v1";
+      const EVENTS_KEY = "gmax-attendance-v1";
+      const today = new Date().toLocaleDateString("en-CA");
+      const formatTime = new Intl.DateTimeFormat(undefined, { hour: "numeric", minute: "2-digit" });
+      const $ = (id) => document.getElementById(id);
+      let workers = readStore(WORKERS_KEY);
+      let events = readStore(EVENTS_KEY);
       let toastTimer;
 
-      function readStore(key, fallback) {
+      function readStore(key) {
         try {
-          const value = JSON.parse(localStorage.getItem(key) || "null");
-          return Array.isArray(value) ? value : fallback;
+          const value = JSON.parse(localStorage.getItem(key) || "[]");
+          return Array.isArray(value) ? value : [];
         } catch (error) {
-          console.error(`Could not read ${key} from local storage.`, error);
-          return fallback;
+          console.error(`Unable to read ${key} from local storage.`, error);
+          return [];
         }
       }
 
       function saveStore(key, value) {
         try {
           localStorage.setItem(key, JSON.stringify(value));
+          return true;
         } catch (error) {
-          console.error(`Could not save ${key} to local storage.`, error);
+          console.error(`Unable to save ${key} to local storage.`, error);
           showToast("Could not save changes in this browser. Check storage permissions.");
           return false;
         }
-        return true;
+      }
+
+      function showToast(message) {
+        const toast = $("toast");
+        toast.textContent = message;
+        toast.classList.add("show");
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => toast.classList.remove("show"), 3500);
       }
 
       function initials(name) {
         return name.trim().split(/\s+/).slice(0, 2).map((part) => part[0].toUpperCase()).join("");
       }
 
-      function safeText(value) {
-        return String(value).replace(/[&<>"']/g, (character) => ({
+      function escapeHtml(value) {
+        return String(value).replace(/[&<>"']/g, (char) => ({
           "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
-        })[character]);
+        })[char]);
       }
 
-      function showToast(message) {
-        const toast = byId("toast");
-        toast.textContent = message;
-        toast.classList.add("show");
-        clearTimeout(toastTimer);
-        toastTimer = setTimeout(() => toast.classList.remove("show"), 3600);
-      }
-
-      function todayEvents() {
-        return events.filter((event) => event.date === todayKey);
+      function todaysEvents() {
+        return events.filter((event) => event.date === today);
       }
 
       function render() {
-        const query = byId("searchInput").value.trim().toLowerCase();
+        const query = $("searchInput").value.trim().toLowerCase();
         const filtered = workers.filter((worker) =>
           [worker.name, worker.workerId, worker.department].some((value) => value.toLowerCase().includes(query))
         );
-        const rows = byId("workerRows");
-        rows.innerHTML = filtered.map((worker) => {
-          const lastEvent = todayEvents().find((event) => event.workerId === worker.workerId);
-          const status = lastEvent
-            ? `<span class="status verified">${lastEvent.type === "in" ? "Checked in" : "Checked out"}</span>`
-            : '<span class="status">Not yet in</span>';
-          const enrollment = worker.enrolled
-            ? '<span class="status verified">Enrolled</span>'
-            : '<span class="status not-enrolled">Not enrolled</span>';
-          const color = colors[Math.abs(worker.name.length) % colors.length];
+        $("workerRows").innerHTML = filtered.map((worker) => {
+          const latest = todaysEvents().find((event) => event.workerId === worker.workerId);
+          const attendance = latest ? (latest.type === "in" ? "Checked in" : "Checked out") : "Not yet in";
           return `<tr>
-            <td><div class="worker-name"><span class="worker-avatar ${color}">${safeText(initials(worker.name))}</span><span>${safeText(worker.name)}<br><span style="color:#9aa3b3;font-size:10px;font-weight:500">${safeText(worker.workerId)}</span></span></div></td>
-            <td>${safeText(worker.department)}</td>
-            <td>${enrollment}</td>
-            <td>${status}</td>
+            <td><div class="worker"><span class="worker-avatar">${escapeHtml(initials(worker.name))}</span><span>${escapeHtml(worker.name)}<span class="sub">${escapeHtml(worker.workerId)}</span></span></div></td>
+            <td>${escapeHtml(worker.department)}</td>
+            <td><span class="status ${worker.enrolled ? "good" : "pending"}">${worker.enrolled ? "Enrolled" : "Not enrolled"}</span></td>
+            <td><span class="status ${latest && latest.type === "in" ? "good" : ""}">${attendance}</span></td>
           </tr>`;
         }).join("");
-        byId("emptyState").hidden = filtered.length !== 0;
-        if (filtered.length === 0 && workers.length > 0) byId("emptyState").textContent = "No workers match your search.";
-        else byId("emptyState").textContent = "No workers found. Add your first worker to get started.";
+        $("emptyState").hidden = filtered.length > 0;
+        $("emptyState").textContent = workers.length && query
+          ? "No workers match your search."
+          : "No workers found. Add your first worker to get started.";
 
-        const presentIds = new Set(todayEvents().filter((event) => event.type === "in").map((event) => event.workerId));
-        byId("totalWorkers").textContent = workers.length;
-        byId("presentWorkers").textContent = presentIds.size;
-        byId("notInWorkers").textContent = Math.max(0, workers.length - presentIds.size);
-        byId("enrolledWorkers").textContent = workers.filter((worker) => worker.enrolled).length;
+        const present = new Set(todaysEvents().filter((event) => event.type === "in").map((event) => event.workerId));
+        $("totalWorkers").textContent = workers.length;
+        $("presentWorkers").textContent = present.size;
+        $("notInWorkers").textContent = Math.max(0, workers.length - present.size);
+        $("enrolledWorkers").textContent = workers.filter((worker) => worker.enrolled).length;
 
-        const activity = todayEvents().slice(0, 5);
-        byId("activityList").innerHTML = activity.map((event) => {
+        const recent = todaysEvents().slice(0, 5);
+        $("activityList").innerHTML = recent.map((event) => {
           const worker = workers.find((item) => item.workerId === event.workerId);
           if (!worker) return "";
-          const color = colors[Math.abs(worker.name.length) % colors.length];
-          return `<div class="activity-item"><div class="activity-person"><span class="worker-avatar ${color}">${safeText(initials(worker.name))}</span>${safeText(worker.name)} <span class="subheading">${event.type === "in" ? "checked in" : "checked out"}</span></div><span class="activity-time">${timeLabel.format(new Date(event.timestamp))}</span></div>`;
+          const label = event.type === "in" ? "checked in" : "checked out";
+          return `<div class="activity-row"><span class="activity-who"><span class="worker-avatar">${escapeHtml(initials(worker.name))}</span>${escapeHtml(worker.name)} ${label}</span><span class="activity-time">${formatTime.format(new Date(event.timestamp))}</span></div>`;
         }).join("");
-        byId("activityEmpty").hidden = activity.length > 0;
+        $("activityEmpty").hidden = recent.length > 0;
       }
 
-      byId("todayDate").textContent = dateLabel.format(new Date());
-      byId("activityDate").textContent = new Intl.DateTimeFormat(undefined, { month: "short", day: "numeric" }).format(new Date());
-      byId("addWorkerBtn").addEventListener("click", () => byId("workerDialog").showModal());
-      byId("closeDialog").addEventListener("click", () => byId("workerDialog").close());
-      byId("cancelDialog").addEventListener("click", () => byId("workerDialog").close());
-      byId("searchInput").addEventListener("input", render);
-      byId("connectBtn").addEventListener("click", () => showToast("A backend is required for secure biometric enrollment and attendance verification."));
+      $("todayDate").textContent = new Intl.DateTimeFormat(undefined, {
+        weekday: "short", month: "short", day: "numeric", year: "numeric"
+      }).format(new Date());
+      $("addWorkerBtn").addEventListener("click", () => $("workerDialog").showModal());
+      $("cancelDialog").addEventListener("click", () => $("workerDialog").close());
+      $("searchInput").addEventListener("input", render);
+      $("connectBtn").addEventListener("click", () => showToast("A secure backend and compatible biometric device are required to enable enrollment."));
 
-      byId("workerForm").addEventListener("submit", (event) => {
+      $("workerForm").addEventListener("submit", (event) => {
         event.preventDefault();
-        const formData = new FormData(event.currentTarget);
-        const name = String(formData.get("name")).trim();
-        const workerId = String(formData.get("workerId")).trim();
-        const department = String(formData.get("department"));
+        const data = new FormData(event.currentTarget);
+        const name = String(data.get("name")).trim();
+        const workerId = String(data.get("workerId")).trim();
+        const department = String(data.get("department"));
         if (!name || !workerId || !department) return;
         if (workers.some((worker) => worker.workerId.toLowerCase() === workerId.toLowerCase())) {
           showToast("That worker ID is already in use.");
-          byId("workerId").focus();
+          $("workerId").focus();
           return;
         }
-        workers.unshift({ name, workerId, department, enrolled: false });
+        const worker = { name, workerId, department, enrolled: false };
+        workers.unshift(worker);
         if (!saveStore(WORKERS_KEY, workers)) {
           workers.shift();
           return;
         }
         event.currentTarget.reset();
-        byId("workerDialog").close();
+        $("workerDialog").close();
         render();
         showToast(`${name} added. Connect a biometric service to enroll them.`);
       });
