@@ -10,7 +10,6 @@
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
       color: #17233b;
       background: #f5f7fb;
-      font-synthesis: none;
       --muted: #748099;
       --line: #e7ebf2;
       --blue: #4169e1;
@@ -20,15 +19,9 @@
     body { margin: 0; min-width: 320px; }
     button, input, select { font: inherit; }
     button { cursor: pointer; }
-    .sidebar {
-      position: fixed; inset: 0 auto 0 0; width: 235px; padding: 27px 19px;
-      background: white; border-right: 1px solid var(--line);
-    }
+    .sidebar { position: fixed; inset: 0 auto 0 0; width: 235px; padding: 27px 19px; background: #fff; border-right: 1px solid var(--line); }
     .brand { display: flex; align-items: center; gap: 11px; font-size: 20px; font-weight: 800; letter-spacing: -.5px; }
-    .brand-mark {
-      display: grid; width: 36px; height: 36px; place-items: center;
-      border-radius: 11px; background: #e9efff; color: var(--blue);
-    }
+    .brand-mark { display: grid; width: 36px; height: 36px; place-items: center; border-radius: 11px; background: #e9efff; color: var(--blue); }
     .brand-mark svg { width: 22px; }
     .nav-label { margin: 42px 10px 12px; color: #a0a9ba; font-size: 10px; font-weight: 750; letter-spacing: 1px; text-transform: uppercase; }
     .nav-link { display: flex; align-items: center; gap: 12px; padding: 11px 12px; border-radius: 9px; color: #65728b; font-size: 13px; font-weight: 600; }
@@ -40,14 +33,14 @@
     .eyebrow { margin: 0 0 3px; color: var(--muted); font-size: 12px; }
     h1 { margin: 0; font-size: 26px; letter-spacing: -.7px; }
     .top-meta { display: flex; align-items: center; gap: 9px; color: #52617b; font-size: 12px; }
-    .date { padding: 9px 12px; border: 1px solid var(--line); border-radius: 8px; background: white; }
+    .date { padding: 9px 12px; border: 1px solid var(--line); border-radius: 8px; background: #fff; }
     .avatar { display: grid; width: 33px; height: 33px; place-items: center; border-radius: 50%; background: #e8edfb; color: #5265a7; font-size: 11px; font-weight: 750; }
     .stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 15px; margin-bottom: 22px; }
     .stat, .card { border: 1px solid var(--line); border-radius: 12px; background: #fff; box-shadow: 0 10px 28px #1b2c500d; }
     .stat { min-height: 112px; padding: 17px 19px; }
     .stat-label { color: var(--muted); font-size: 12px; font-weight: 600; }
     .stat-value { margin-top: 8px; font-size: 26px; font-weight: 750; letter-spacing: -.6px; }
-    .grid { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(290px, .85fr); gap: 19px; align-items: start; }
+    .grid { display: grid; grid-template-columns: minmax(0, 1.65fr) minmax(270px, .75fr); gap: 19px; align-items: start; }
     .card { overflow: hidden; }
     .card-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 18px 20px; border-bottom: 1px solid var(--line); }
     h2 { margin: 0; font-size: 15px; }
@@ -58,16 +51,16 @@
     .search:focus, input:focus, select:focus { border-color: #91a8f4; box-shadow: 0 0 0 3px #4169e11a; }
     .table-scroll { overflow-x: auto; }
     table { width: 100%; border-collapse: collapse; text-align: left; }
-    th { padding: 10px 18px; background: #fafbfc; color: #909aae; font-size: 10px; letter-spacing: .5px; text-transform: uppercase; }
-    td { padding: 12px 18px; border-top: 1px solid #f0f2f6; color: #5c6880; font-size: 12px; white-space: nowrap; }
+    th { padding: 10px 14px; background: #fafbfc; color: #909aae; font-size: 10px; letter-spacing: .45px; text-transform: uppercase; white-space: nowrap; }
+    td { padding: 12px 14px; border-top: 1px solid #f0f2f6; color: #5c6880; font-size: 12px; white-space: nowrap; }
     .worker { display: flex; align-items: center; gap: 9px; color: #17233b; font-weight: 650; }
     .worker-avatar { display: grid; width: 31px; height: 31px; flex: 0 0 31px; place-items: center; border-radius: 50%; background: #e8efff; color: #5270c4; font-size: 10px; font-weight: 750; }
     .sub { display: block; color: #9aa3b3; font-size: 10px; font-weight: 500; }
-    .status { color: #929cad; font-size: 11px; }
-    .status::before { display: inline-block; width: 7px; height: 7px; margin-right: 6px; border-radius: 50%; background: #bbc3d0; content: ""; }
-    .status.good { color: #16865f; }
-    .status.good::before { background: #21ab79; }
-    .status.pending::before { background: #e9a845; }
+    .time-cell { color: #52617b; font-variant-numeric: tabular-nums; }
+    .time-cell.missing { color: #a0a9ba; }
+    .row-action { padding: 6px 9px; border: 1px solid var(--line); border-radius: 7px; background: #fff; color: var(--blue); font-size: 10px; font-weight: 650; }
+    .row-action:hover:not(:disabled) { background: #edf2ff; }
+    .row-action:disabled { cursor: default; opacity: .48; }
     .empty { padding: 23px 15px; color: var(--muted); text-align: center; font-size: 12px; }
     .kiosk { padding: 19px 20px 20px; }
     .notice { display: flex; align-items: center; gap: 7px; margin-bottom: 19px; color: #af7021; font-size: 11px; font-weight: 650; }
@@ -91,11 +84,12 @@
     .dialog-body { display: grid; gap: 13px; padding: 18px 21px 21px; }
     .field { display: grid; gap: 6px; }
     .field label { color: #59667e; font-size: 11px; font-weight: 650; }
-    .field input, .field select { height: 38px; padding: 0 10px; border: 1px solid var(--line); border-radius: 7px; background: white; font-size: 12px; outline: 0; }
+    .field input, .field select { height: 38px; padding: 0 10px; border: 1px solid var(--line); border-radius: 7px; background: #fff; font-size: 12px; outline: 0; }
     .actions { display: flex; justify-content: flex-end; gap: 8px; padding-top: 5px; }
-    .cancel { min-height: 36px; padding: 0 12px; border: 1px solid var(--line); border-radius: 8px; background: white; color: #53617a; font-size: 12px; }
-    .toast { position: fixed; right: 20px; bottom: 20px; max-width: min(380px, calc(100vw - 40px)); padding: 12px 15px; border: 1px solid var(--line); border-radius: 9px; background: white; box-shadow: 0 10px 28px #1b2c501a; color: #43516b; font-size: 12px; opacity: 0; pointer-events: none; transform: translateY(7px); transition: .2s; }
+    .cancel { min-height: 36px; padding: 0 12px; border: 1px solid var(--line); border-radius: 8px; background: #fff; color: #53617a; font-size: 12px; }
+    .toast { position: fixed; right: 20px; bottom: 20px; max-width: min(380px, calc(100vw - 40px)); padding: 12px 15px; border: 1px solid var(--line); border-radius: 9px; background: #fff; box-shadow: 0 10px 28px #1b2c501a; color: #43516b; font-size: 12px; opacity: 0; pointer-events: none; transform: translateY(7px); transition: .2s; }
     .toast.show { opacity: 1; transform: translateY(0); }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
     @media (max-width: 1050px) {
       .sidebar { width: 200px; } main { margin-left: 200px; padding: 28px 24px; }
       .stats { grid-template-columns: repeat(2, 1fr); } .grid { grid-template-columns: 1fr; }
@@ -107,7 +101,6 @@
       .date { font-size: 10px; } .stats { gap: 9px; margin-bottom: 15px; }
       .stat { min-height: 95px; padding: 13px; } .stat-value { font-size: 23px; }
       .card-header { padding: 15px; } .search { width: calc(100% - 30px); margin: 13px 15px 9px; }
-      th, td { padding-right: 12px; padding-left: 12px; }
     }
     @media (max-width: 380px) { .date { display: none; } }
   </style>
@@ -146,14 +139,16 @@
     <div class="grid">
       <section class="card" aria-labelledby="workersHeading">
         <div class="card-header">
-          <div><h2 id="workersHeading">Workers</h2><p class="hint">Manage your team and enrollment</p></div>
+          <div><h2 id="workersHeading">Workers</h2><p class="hint">Today's attendance and sign-in/out times</p></div>
           <button class="btn" id="addWorkerBtn" type="button">＋ Add worker</button>
         </div>
         <label class="sr-only" for="searchInput">Search workers</label>
         <input class="search" id="searchInput" type="search" placeholder="Search by name, ID, or department">
         <div class="table-scroll">
           <table>
-            <thead><tr><th>Worker</th><th>Department</th><th>Biometric</th><th>Today</th></tr></thead>
+            <thead>
+              <tr><th>Worker</th><th>Department</th><th>Sign-in</th><th>Sign-out</th><th>Record</th></tr>
+            </thead>
             <tbody id="workerRows"></tbody>
           </table>
           <div class="empty" id="emptyState">No workers found. Add your first worker to get started.</div>
@@ -171,13 +166,13 @@
               </svg>
             </div>
             <h3>Ready for secure setup</h3>
-            <p class="kiosk-copy">Connect a WebAuthn-compatible service to enroll workers and record verified attendance.</p>
+            <p class="kiosk-copy">Use the sign-in and sign-out controls in the worker list to record today's times.</p>
             <button class="btn" id="connectBtn" type="button">Set up biometric service</button>
             <div class="privacy"><strong>Privacy first.</strong> This page does not collect or store fingerprint images. Biometric verification requires a secure server and compatible device.</div>
           </div>
         </section>
         <section class="activity" aria-labelledby="activityHeading">
-          <h2 class="activity-heading" id="activityHeading">Recent activity</h2>
+          <h2 class="activity-heading" id="activityHeading">Recent attendance</h2>
           <div class="card">
             <div class="activity-list" id="activityList"></div>
             <div class="empty" id="activityEmpty">No attendance recorded today.</div>
@@ -204,7 +199,13 @@
     (() => {
       const WORKERS_KEY = "gmax-workers-v1";
       const EVENTS_KEY = "gmax-attendance-v1";
-      const today = new Date().toLocaleDateString("en-CA");
+      const dateKey = (date) => {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
+        return `${year}-${month}-${day}`;
+      };
+      const today = dateKey(new Date());
       const formatTime = new Intl.DateTimeFormat(undefined, { hour: "numeric", minute: "2-digit" });
       const $ = (id) => document.getElementById(id);
       let workers = readStore(WORKERS_KEY);
@@ -250,8 +251,8 @@
         })[char]);
       }
 
-      function todaysEvents() {
-        return events.filter((event) => event.date === today);
+      function eventsFor(workerId) {
+        return events.filter((event) => event.workerId === workerId && event.date === today);
       }
 
       function render() {
@@ -260,13 +261,19 @@
           [worker.name, worker.workerId, worker.department].some((value) => value.toLowerCase().includes(query))
         );
         $("workerRows").innerHTML = filtered.map((worker) => {
-          const latest = todaysEvents().find((event) => event.workerId === worker.workerId);
-          const attendance = latest ? (latest.type === "in" ? "Checked in" : "Checked out") : "Not yet in";
+          const workerEvents = eventsFor(worker.workerId);
+          const signIn = workerEvents.find((event) => event.type === "in");
+          const signOut = workerEvents.find((event) => event.type === "out");
+          const canSignIn = !signIn;
+          const canSignOut = Boolean(signIn) && !signOut;
+          const actions = `<button class="row-action" type="button" data-action="in" data-worker="${escapeHtml(worker.workerId)}" ${canSignIn ? "" : "disabled"}>Sign in</button>
+            <button class="row-action" type="button" data-action="out" data-worker="${escapeHtml(worker.workerId)}" ${canSignOut ? "" : "disabled"}>Sign out</button>`;
           return `<tr>
             <td><div class="worker"><span class="worker-avatar">${escapeHtml(initials(worker.name))}</span><span>${escapeHtml(worker.name)}<span class="sub">${escapeHtml(worker.workerId)}</span></span></div></td>
             <td>${escapeHtml(worker.department)}</td>
-            <td><span class="status ${worker.enrolled ? "good" : "pending"}">${worker.enrolled ? "Enrolled" : "Not enrolled"}</span></td>
-            <td><span class="status ${latest && latest.type === "in" ? "good" : ""}">${attendance}</span></td>
+            <td class="time-cell ${signIn ? "" : "missing"}">${signIn ? formatTime.format(new Date(signIn.timestamp)) : "—"}</td>
+            <td class="time-cell ${signOut ? "" : "missing"}">${signOut ? formatTime.format(new Date(signOut.timestamp)) : "—"}</td>
+            <td>${actions}</td>
           </tr>`;
         }).join("");
         $("emptyState").hidden = filtered.length > 0;
@@ -274,20 +281,42 @@
           ? "No workers match your search."
           : "No workers found. Add your first worker to get started.";
 
-        const present = new Set(todaysEvents().filter((event) => event.type === "in").map((event) => event.workerId));
+        const present = new Set(events.filter((event) => event.date === today && event.type === "in").map((event) => event.workerId));
         $("totalWorkers").textContent = workers.length;
         $("presentWorkers").textContent = present.size;
         $("notInWorkers").textContent = Math.max(0, workers.length - present.size);
         $("enrolledWorkers").textContent = workers.filter((worker) => worker.enrolled).length;
 
-        const recent = todaysEvents().slice(0, 5);
+        const recent = events.filter((event) => event.date === today).slice().reverse().slice(0, 5);
         $("activityList").innerHTML = recent.map((event) => {
           const worker = workers.find((item) => item.workerId === event.workerId);
           if (!worker) return "";
-          const label = event.type === "in" ? "checked in" : "checked out";
+          const label = event.type === "in" ? "signed in" : "signed out";
           return `<div class="activity-row"><span class="activity-who"><span class="worker-avatar">${escapeHtml(initials(worker.name))}</span>${escapeHtml(worker.name)} ${label}</span><span class="activity-time">${formatTime.format(new Date(event.timestamp))}</span></div>`;
         }).join("");
         $("activityEmpty").hidden = recent.length > 0;
+      }
+
+      function recordAttendance(workerId, type) {
+        const worker = workers.find((item) => item.workerId === workerId);
+        if (!worker) return;
+        const currentEvents = eventsFor(workerId);
+        if (type === "in" && currentEvents.some((event) => event.type === "in")) {
+          showToast(`${worker.name} already has a sign-in time for today.`);
+          return;
+        }
+        if (type === "out" && (!currentEvents.some((event) => event.type === "in") || currentEvents.some((event) => event.type === "out"))) {
+          showToast(`Sign in ${worker.name} first, or sign-out is already recorded.`);
+          return;
+        }
+        const entry = { workerId, type, date: today, timestamp: new Date().toISOString() };
+        events.push(entry);
+        if (!saveStore(EVENTS_KEY, events)) {
+          events.pop();
+          return;
+        }
+        render();
+        showToast(`${worker.name} signed ${type === "in" ? "in" : "out"} at ${formatTime.format(new Date(entry.timestamp))}.`);
       }
 
       $("todayDate").textContent = new Intl.DateTimeFormat(undefined, {
@@ -296,6 +325,10 @@
       $("addWorkerBtn").addEventListener("click", () => $("workerDialog").showModal());
       $("cancelDialog").addEventListener("click", () => $("workerDialog").close());
       $("searchInput").addEventListener("input", render);
+      $("workerRows").addEventListener("click", (event) => {
+        const button = event.target.closest("button[data-action]");
+        if (button && !button.disabled) recordAttendance(button.dataset.worker, button.dataset.action);
+      });
       $("connectBtn").addEventListener("click", () => showToast("A secure backend and compatible biometric device are required to enable enrollment."));
 
       $("workerForm").addEventListener("submit", (event) => {
@@ -319,7 +352,7 @@
         event.currentTarget.reset();
         $("workerDialog").close();
         render();
-        showToast(`${name} added. Connect a biometric service to enroll them.`);
+        showToast(`${name} added to GMAX.`);
       });
 
       render();
