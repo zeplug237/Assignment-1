@@ -13,7 +13,6 @@
       --muted: #748099;
       --line: #e7ebf2;
       --blue: #4169e1;
-      --green: #15966a;
     }
     * { box-sizing: border-box; }
     body { margin: 0; min-width: 320px; }
@@ -24,9 +23,9 @@
     .brand-mark { display: grid; width: 36px; height: 36px; place-items: center; border-radius: 11px; background: #e9efff; color: var(--blue); }
     .brand-mark svg { width: 22px; }
     .nav-label { margin: 42px 10px 12px; color: #a0a9ba; font-size: 10px; font-weight: 750; letter-spacing: 1px; text-transform: uppercase; }
-    .nav-link { display: flex; align-items: center; gap: 12px; padding: 11px 12px; border-radius: 9px; color: #65728b; font-size: 13px; font-weight: 600; }
+    .nav-link { display: flex; width: 100%; align-items: center; gap: 12px; margin: 3px 0; padding: 11px 12px; border: 0; border-radius: 9px; background: transparent; color: #65728b; text-align: left; font-size: 13px; font-weight: 600; }
     .nav-link.active { background: #edf2ff; color: var(--blue); }
-    .nav-link svg { width: 18px; height: 18px; }
+    .nav-link svg { width: 18px; height: 18px; flex: 0 0 18px; }
     .sidebar-foot { position: absolute; bottom: 24px; color: var(--muted); font-size: 11px; }
     main { max-width: 1500px; margin-left: 235px; padding: 34px 42px 48px; }
     .topbar { display: flex; align-items: center; justify-content: space-between; gap: 15px; margin-bottom: 27px; }
@@ -47,6 +46,7 @@
     .hint { margin: 3px 0 0; color: var(--muted); font-size: 11px; }
     .btn { display: inline-flex; min-height: 37px; align-items: center; justify-content: center; gap: 7px; padding: 0 13px; border: 0; border-radius: 8px; background: var(--blue); color: #fff; font-size: 12px; font-weight: 650; }
     .btn:hover { background: #3156c6; }
+    .btn.secondary { border: 1px solid var(--line); background: #fff; color: #53617a; }
     .search { width: calc(100% - 40px); height: 37px; margin: 15px 20px 10px; padding: 0 11px; border: 1px solid var(--line); border-radius: 8px; outline: 0; font-size: 12px; }
     .search:focus, input:focus, select:focus { border-color: #91a8f4; box-shadow: 0 0 0 3px #4169e11a; }
     .table-scroll { overflow-x: auto; }
@@ -70,7 +70,7 @@
     .kiosk h3 { margin: 0; text-align: center; font-size: 14px; }
     .kiosk-copy { max-width: 270px; margin: 6px auto 17px; color: var(--muted); text-align: center; font-size: 11px; }
     .kiosk .btn { width: 100%; min-height: 40px; }
-    .privacy { margin-top: 14px; padding: 11px; border-radius: 8px; background: #f7f8fb; color: #79849a; font-size: 10px; line-height: 1.55; }
+    .privacy, .security-note { margin-top: 14px; padding: 11px; border-radius: 8px; background: #f7f8fb; color: #79849a; font-size: 10px; line-height: 1.55; }
     .activity { margin-top: 19px; }
     .activity-heading { margin: 0 0 11px; font-size: 13px; }
     .activity-list { display: grid; gap: 12px; padding: 14px; }
@@ -78,18 +78,27 @@
     .activity-who { display: flex; align-items: center; gap: 8px; }
     .activity-who .worker-avatar { width: 27px; height: 27px; flex-basis: 27px; }
     .activity-time { color: var(--muted); font-size: 10px; }
+    .user-panel { max-width: 720px; margin: 0 auto; }
+    .user-form { display: grid; gap: 14px; padding: 22px; }
+    .user-form h2 { font-size: 17px; }
+    .field { display: grid; gap: 6px; }
+    .field label { color: #59667e; font-size: 11px; font-weight: 650; }
+    .field input, .field select { width: 100%; height: 39px; padding: 0 10px; border: 1px solid var(--line); border-radius: 7px; background: #fff; font-size: 12px; outline: 0; }
+    .user-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 9px; }
+    .user-view { max-width: 900px; margin: 0 auto; }
+    .user-view-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 18px 20px; border-bottom: 1px solid var(--line); }
+    .user-view-body { padding: 18px 20px; }
+    .table-note { margin: 0 0 13px; color: var(--muted); font-size: 11px; }
     dialog { width: min(420px, calc(100% - 32px)); padding: 0; border: 1px solid var(--line); border-radius: 12px; box-shadow: 0 22px 70px #14224133; }
     dialog::backdrop { background: #111c31a6; }
     .dialog-head { padding: 19px 21px; border-bottom: 1px solid var(--line); }
     .dialog-body { display: grid; gap: 13px; padding: 18px 21px 21px; }
-    .field { display: grid; gap: 6px; }
-    .field label { color: #59667e; font-size: 11px; font-weight: 650; }
-    .field input, .field select { height: 38px; padding: 0 10px; border: 1px solid var(--line); border-radius: 7px; background: #fff; font-size: 12px; outline: 0; }
     .actions { display: flex; justify-content: flex-end; gap: 8px; padding-top: 5px; }
     .cancel { min-height: 36px; padding: 0 12px; border: 1px solid var(--line); border-radius: 8px; background: #fff; color: #53617a; font-size: 12px; }
     .toast { position: fixed; right: 20px; bottom: 20px; max-width: min(380px, calc(100vw - 40px)); padding: 12px 15px; border: 1px solid var(--line); border-radius: 9px; background: #fff; box-shadow: 0 10px 28px #1b2c501a; color: #43516b; font-size: 12px; opacity: 0; pointer-events: none; transform: translateY(7px); transition: .2s; }
     .toast.show { opacity: 1; transform: translateY(0); }
     .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+    [hidden] { display: none !important; }
     @media (max-width: 1050px) {
       .sidebar { width: 200px; } main { margin-left: 200px; padding: 28px 24px; }
       .stats { grid-template-columns: repeat(2, 1fr); } .grid { grid-template-columns: 1fr; }
@@ -116,70 +125,90 @@
       GMAX
     </div>
     <div class="nav-label">Workspace</div>
-    <div class="nav-link active" aria-current="page">
+    <button class="nav-link active" id="attendanceNav" type="button" aria-current="page">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M16 2v4M8 2v4M3 10h18m-13 4h3m-3 3h7"/></svg>
       Attendance
-    </div>
+    </button>
+    <button class="nav-link" id="usersNav" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2m16 0v-2a4 4 0 0 0-3-3.87M10 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm8-7.87a4 4 0 0 1 0 7.75"/></svg>
+      Users
+    </button>
     <div class="sidebar-foot">Worker attendance workspace</div>
   </aside>
 
   <main>
     <header class="topbar">
-      <div><p class="eyebrow">Good morning, Admin</p><h1>Attendance</h1></div>
-      <div class="top-meta"><span class="date" id="todayDate"></span><span class="avatar">AD</span> Admin</div>
+      <div><p class="eyebrow">Good morning, Admin</p><h1 id="pageTitle">Attendance</h1></div>
+      <div class="top-meta"><span class="date" id="todayDate"></span><span class="avatar" id="profileAvatar">AD</span><span id="profileName">Admin</span></div>
     </header>
 
-    <section class="stats" aria-label="Today's attendance summary">
-      <article class="stat"><div class="stat-label">Total workers</div><div class="stat-value" id="totalWorkers">0</div></article>
-      <article class="stat"><div class="stat-label">Present today</div><div class="stat-value" id="presentWorkers">0</div></article>
-      <article class="stat"><div class="stat-label">Not yet in</div><div class="stat-value" id="notInWorkers">0</div></article>
-      <article class="stat"><div class="stat-label">Biometrics enrolled</div><div class="stat-value" id="enrolledWorkers">0</div></article>
+    <section id="adminView">
+      <section class="stats" aria-label="Today's attendance summary">
+        <article class="stat"><div class="stat-label">Total workers</div><div class="stat-value" id="totalWorkers">0</div></article>
+        <article class="stat"><div class="stat-label">Signed in today</div><div class="stat-value" id="presentWorkers">0</div></article>
+        <article class="stat"><div class="stat-label">Not yet in</div><div class="stat-value" id="notInWorkers">0</div></article>
+        <article class="stat"><div class="stat-label">Biometrics enrolled</div><div class="stat-value" id="enrolledWorkers">0</div></article>
+      </section>
+      <div class="grid">
+        <section class="card" aria-labelledby="workersHeading">
+          <div class="card-header">
+            <div><h2 id="workersHeading">Workers</h2><p class="hint">Today's attendance and sign-in/out times</p></div>
+            <button class="btn" id="addWorkerBtn" type="button">＋ Add worker</button>
+          </div>
+          <label class="sr-only" for="searchInput">Search workers</label>
+          <input class="search" id="searchInput" type="search" placeholder="Search by name, ID, or department">
+          <div class="table-scroll">
+            <table><thead><tr><th>Worker</th><th>Department</th><th>Sign-in</th><th>Sign-out</th><th>Record</th></tr></thead><tbody id="workerRows"></tbody></table>
+            <div class="empty" id="emptyState">No workers found. Add your first worker to get started.</div>
+          </div>
+        </section>
+        <div>
+          <section class="card" aria-labelledby="kioskHeading">
+            <div class="card-header"><div><h2 id="kioskHeading">Biometric kiosk</h2><p class="hint">Worker check-in station</p></div></div>
+            <div class="kiosk">
+              <div class="notice">Biometric service not connected</div>
+              <div class="fingerprint" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.55" stroke-linecap="round"><path d="M7 3h10M7 21h10M5 6c0 3 2 4 2 6s-2 3-2 6M19 6c0 3-2 4-2 6s2 3 2 6M12 7v10M9 9c0 2 1 2 1 3s-1 1-1 3M15 9c0 2-1 2-1 3s1 1 1 3"/></svg></div>
+              <h3>Ready for secure setup</h3>
+              <p class="kiosk-copy">Use the sign-in and sign-out controls in the worker list to record today's times.</p>
+              <button class="btn" id="connectBtn" type="button">Set up biometric service</button>
+              <div class="privacy"><strong>Privacy first.</strong> This page does not collect or store fingerprint images. Biometric verification requires a secure server and compatible device.</div>
+            </div>
+          </section>
+          <section class="activity" aria-labelledby="activityHeading">
+            <h2 class="activity-heading" id="activityHeading">Recent attendance</h2>
+            <div class="card"><div class="activity-list" id="activityList"></div><div class="empty" id="activityEmpty">No attendance recorded today.</div></div>
+          </section>
+        </div>
+      </div>
     </section>
 
-    <div class="grid">
-      <section class="card" aria-labelledby="workersHeading">
-        <div class="card-header">
-          <div><h2 id="workersHeading">Workers</h2><p class="hint">Today's attendance and sign-in/out times</p></div>
-          <button class="btn" id="addWorkerBtn" type="button">＋ Add worker</button>
+    <section id="userView" hidden>
+      <div class="user-panel card" id="userAccess">
+        <div class="card-header"><div><h2>User attendance access</h2><p class="hint">Create an account linked to your worker ID to view your own records.</p></div></div>
+        <form class="user-form" id="userForm">
+          <div class="field"><label for="accountWorkerId">Worker ID</label><input id="accountWorkerId" name="workerId" required maxlength="32" autocomplete="username" placeholder="Your assigned worker ID"></div>
+          <div class="field"><label for="accountPassword">Password</label><input id="accountPassword" name="password" type="password" required minlength="8" autocomplete="new-password" placeholder="At least 8 characters"></div>
+          <div class="user-actions">
+            <button class="btn" type="submit" id="createAccountBtn">Create user account</button>
+            <button class="btn secondary" type="button" id="signInBtn">Sign in</button>
+          </div>
+          <div class="security-note">Your account is linked to a worker record. User accounts can only view attendance; they cannot add workers or change attendance. This standalone demo stores data in this browser and is not secure authentication—use a server with access controls before deploying.</div>
+        </form>
+      </div>
+      <section class="user-view card" id="personalAttendance" hidden>
+        <div class="user-view-head">
+          <div><h2 id="personalName">My attendance</h2><p class="hint" id="personalWorkerId"></p></div>
+          <button class="btn secondary" id="signOutAccountBtn" type="button">Sign out</button>
         </div>
-        <label class="sr-only" for="searchInput">Search workers</label>
-        <input class="search" id="searchInput" type="search" placeholder="Search by name, ID, or department">
-        <div class="table-scroll">
-          <table>
-            <thead>
-              <tr><th>Worker</th><th>Department</th><th>Sign-in</th><th>Sign-out</th><th>Record</th></tr>
-            </thead>
-            <tbody id="workerRows"></tbody>
-          </table>
-          <div class="empty" id="emptyState">No workers found. Add your first worker to get started.</div>
+        <div class="user-view-body">
+          <p class="table-note">Your attendance history is view-only.</p>
+          <div class="table-scroll">
+            <table><thead><tr><th>Date</th><th>Sign-in time</th><th>Sign-out time</th></tr></thead><tbody id="personalRows"></tbody></table>
+            <div class="empty" id="personalEmpty">No attendance records yet.</div>
+          </div>
         </div>
       </section>
-
-      <div>
-        <section class="card" aria-labelledby="kioskHeading">
-          <div class="card-header"><div><h2 id="kioskHeading">Biometric kiosk</h2><p class="hint">Worker check-in station</p></div></div>
-          <div class="kiosk">
-            <div class="notice">Biometric service not connected</div>
-            <div class="fingerprint" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.55" stroke-linecap="round">
-                <path d="M7 3h10M7 21h10M5 6c0 3 2 4 2 6s-2 3-2 6M19 6c0 3-2 4-2 6s2 3 2 6M12 7v10M9 9c0 2 1 2 1 3s-1 1-1 3M15 9c0 2-1 2-1 3s1 1 1 3"/>
-              </svg>
-            </div>
-            <h3>Ready for secure setup</h3>
-            <p class="kiosk-copy">Use the sign-in and sign-out controls in the worker list to record today's times.</p>
-            <button class="btn" id="connectBtn" type="button">Set up biometric service</button>
-            <div class="privacy"><strong>Privacy first.</strong> This page does not collect or store fingerprint images. Biometric verification requires a secure server and compatible device.</div>
-          </div>
-        </section>
-        <section class="activity" aria-labelledby="activityHeading">
-          <h2 class="activity-heading" id="activityHeading">Recent attendance</h2>
-          <div class="card">
-            <div class="activity-list" id="activityList"></div>
-            <div class="empty" id="activityEmpty">No attendance recorded today.</div>
-          </div>
-        </section>
-      </div>
-    </div>
+    </section>
   </main>
 
   <dialog id="workerDialog" aria-labelledby="dialogTitle">
@@ -199,6 +228,9 @@
     (() => {
       const WORKERS_KEY = "gmax-workers-v1";
       const EVENTS_KEY = "gmax-attendance-v1";
+      const USERS_KEY = "gmax-user-accounts-v1";
+      const SESSION_KEY = "gmax-user-session-v1";
+      const $ = (id) => document.getElementById(id);
       const dateKey = (date) => {
         const year = date.getFullYear();
         const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -207,9 +239,11 @@
       };
       const today = dateKey(new Date());
       const formatTime = new Intl.DateTimeFormat(undefined, { hour: "numeric", minute: "2-digit" });
-      const $ = (id) => document.getElementById(id);
+      const formatDate = (date) => new Intl.DateTimeFormat(undefined, { year: "numeric", month: "short", day: "numeric" }).format(date);
       let workers = readStore(WORKERS_KEY);
       let events = readStore(EVENTS_KEY);
+      let users = readStore(USERS_KEY);
+      let activeUserId = readSession();
       let toastTimer;
 
       function readStore(key) {
@@ -233,6 +267,29 @@
         }
       }
 
+      function readSession() {
+        try { return sessionStorage.getItem(SESSION_KEY); }
+        catch (error) { console.error("Unable to read the user session.", error); return null; }
+      }
+
+      function setSession(workerId) {
+        try {
+          sessionStorage.setItem(SESSION_KEY, workerId);
+          activeUserId = workerId;
+          return true;
+        } catch (error) {
+          console.error("Unable to save the user session.", error);
+          showToast("Could not start your session in this browser.");
+          return false;
+        }
+      }
+
+      function clearSession() {
+        try { sessionStorage.removeItem(SESSION_KEY); }
+        catch (error) { console.error("Unable to clear the user session.", error); }
+        activeUserId = null;
+      }
+
       function showToast(message) {
         const toast = $("toast");
         toast.textContent = message;
@@ -241,33 +298,31 @@
         toastTimer = setTimeout(() => toast.classList.remove("show"), 3500);
       }
 
-      function initials(name) {
-        return name.trim().split(/\s+/).slice(0, 2).map((part) => part[0].toUpperCase()).join("");
-      }
-
       function escapeHtml(value) {
         return String(value).replace(/[&<>"']/g, (char) => ({
           "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
         })[char]);
       }
 
-      function eventsFor(workerId) {
-        return events.filter((event) => event.workerId === workerId && event.date === today);
+      function initials(name) {
+        return name.trim().split(/\s+/).slice(0, 2).map((part) => part[0].toUpperCase()).join("");
       }
 
-      function render() {
+      function eventsFor(workerId, date) {
+        return events.filter((event) => event.workerId === workerId && event.date === date);
+      }
+
+      function renderAdmin() {
         const query = $("searchInput").value.trim().toLowerCase();
         const filtered = workers.filter((worker) =>
           [worker.name, worker.workerId, worker.department].some((value) => value.toLowerCase().includes(query))
         );
         $("workerRows").innerHTML = filtered.map((worker) => {
-          const workerEvents = eventsFor(worker.workerId);
-          const signIn = workerEvents.find((event) => event.type === "in");
-          const signOut = workerEvents.find((event) => event.type === "out");
-          const canSignIn = !signIn;
-          const canSignOut = Boolean(signIn) && !signOut;
-          const actions = `<button class="row-action" type="button" data-action="in" data-worker="${escapeHtml(worker.workerId)}" ${canSignIn ? "" : "disabled"}>Sign in</button>
-            <button class="row-action" type="button" data-action="out" data-worker="${escapeHtml(worker.workerId)}" ${canSignOut ? "" : "disabled"}>Sign out</button>`;
+          const dayEvents = eventsFor(worker.workerId, today);
+          const signIn = dayEvents.find((event) => event.type === "in");
+          const signOut = dayEvents.find((event) => event.type === "out");
+          const actions = `<button class="row-action" type="button" data-action="in" data-worker="${escapeHtml(worker.workerId)}" ${signIn ? "disabled" : ""}>Sign in</button>
+            <button class="row-action" type="button" data-action="out" data-worker="${escapeHtml(worker.workerId)}" ${!signIn || signOut ? "disabled" : ""}>Sign out</button>`;
           return `<tr>
             <td><div class="worker"><span class="worker-avatar">${escapeHtml(initials(worker.name))}</span><span>${escapeHtml(worker.name)}<span class="sub">${escapeHtml(worker.workerId)}</span></span></div></td>
             <td>${escapeHtml(worker.department)}</td>
@@ -277,57 +332,110 @@
           </tr>`;
         }).join("");
         $("emptyState").hidden = filtered.length > 0;
-        $("emptyState").textContent = workers.length && query
-          ? "No workers match your search."
-          : "No workers found. Add your first worker to get started.";
+        $("emptyState").textContent = workers.length && query ? "No workers match your search." : "No workers found. Add your first worker to get started.";
 
-        const present = new Set(events.filter((event) => event.date === today && event.type === "in").map((event) => event.workerId));
+        const signedIn = new Set(events.filter((event) => event.date === today && event.type === "in").map((event) => event.workerId));
         $("totalWorkers").textContent = workers.length;
-        $("presentWorkers").textContent = present.size;
-        $("notInWorkers").textContent = Math.max(0, workers.length - present.size);
+        $("presentWorkers").textContent = signedIn.size;
+        $("notInWorkers").textContent = Math.max(0, workers.length - signedIn.size);
         $("enrolledWorkers").textContent = workers.filter((worker) => worker.enrolled).length;
-
         const recent = events.filter((event) => event.date === today).slice().reverse().slice(0, 5);
         $("activityList").innerHTML = recent.map((event) => {
           const worker = workers.find((item) => item.workerId === event.workerId);
           if (!worker) return "";
-          const label = event.type === "in" ? "signed in" : "signed out";
-          return `<div class="activity-row"><span class="activity-who"><span class="worker-avatar">${escapeHtml(initials(worker.name))}</span>${escapeHtml(worker.name)} ${label}</span><span class="activity-time">${formatTime.format(new Date(event.timestamp))}</span></div>`;
+          return `<div class="activity-row"><span class="activity-who"><span class="worker-avatar">${escapeHtml(initials(worker.name))}</span>${escapeHtml(worker.name)} ${event.type === "in" ? "signed in" : "signed out"}</span><span class="activity-time">${formatTime.format(new Date(event.timestamp))}</span></div>`;
         }).join("");
         $("activityEmpty").hidden = recent.length > 0;
       }
 
-      function recordAttendance(workerId, type) {
-        const worker = workers.find((item) => item.workerId === workerId);
-        if (!worker) return;
-        const currentEvents = eventsFor(workerId);
-        if (type === "in" && currentEvents.some((event) => event.type === "in")) {
-          showToast(`${worker.name} already has a sign-in time for today.`);
+      function renderPersonalAttendance(workerId) {
+        const worker = workers.find((item) => item.workerId.toLowerCase() === workerId.toLowerCase());
+        if (!worker) {
+          showToast("Your worker profile is no longer available. Contact an administrator.");
+          clearSession();
+          renderMode();
           return;
         }
-        if (type === "out" && (!currentEvents.some((event) => event.type === "in") || currentEvents.some((event) => event.type === "out"))) {
-          showToast(`Sign in ${worker.name} first, or sign-out is already recorded.`);
-          return;
+        $("personalName").textContent = `Hello, ${worker.name}`;
+        $("personalWorkerId").textContent = `Worker ID: ${worker.workerId}`;
+        const dates = [...new Set(events.filter((entry) => entry.workerId === worker.workerId).map((entry) => entry.date))].sort().reverse();
+        $("personalRows").innerHTML = dates.map((date) => {
+          const dayEvents = eventsFor(worker.workerId, date);
+          const signIn = dayEvents.find((entry) => entry.type === "in");
+          const signOut = dayEvents.find((entry) => entry.type === "out");
+          const parsedDate = new Date(`${date}T00:00:00`);
+          return `<tr><td>${formatDate(parsedDate)}</td>
+            <td class="time-cell">${signIn ? formatTime.format(new Date(signIn.timestamp)) : "—"}</td>
+            <td class="time-cell">${signOut ? formatTime.format(new Date(signOut.timestamp)) : "—"}</td></tr>`;
+        }).join("");
+        $("personalEmpty").hidden = dates.length > 0;
+      }
+
+      function renderMode() {
+        const isUser = $("userView").hidden === false && Boolean(activeUserId);
+        $("adminView").hidden = isUser || !$("userView").hidden;
+        $("userAccess").hidden = isUser;
+        $("personalAttendance").hidden = !isUser;
+        $("attendanceNav").classList.toggle("active", $("userView").hidden);
+        $("usersNav").classList.toggle("active", !$("userView").hidden);
+        $("attendanceNav").toggleAttribute("aria-current", $("userView").hidden);
+        $("usersNav").toggleAttribute("aria-current", !$("userView").hidden);
+
+        if (isUser) {
+          const worker = workers.find((item) => item.workerId.toLowerCase() === activeUserId.toLowerCase());
+          $("profileName").textContent = worker ? worker.name : "User";
+          $("profileAvatar").textContent = worker ? initials(worker.name) : "U";
+          $("pageTitle").textContent = "My attendance";
+          renderPersonalAttendance(activeUserId);
+        } else {
+          $("profileName").textContent = "Admin";
+          $("profileAvatar").textContent = "AD";
+          $("pageTitle").textContent = $("userView").hidden ? "Attendance" : "Users";
+          renderAdmin();
         }
-        const entry = { workerId, type, date: today, timestamp: new Date().toISOString() };
-        events.push(entry);
-        if (!saveStore(EVENTS_KEY, events)) {
-          events.pop();
-          return;
+      }
+
+      async function hashPassword(password) {
+        if (!window.crypto || !window.crypto.subtle) {
+          throw new Error("Secure password hashing is unavailable. Open this page over HTTPS or localhost.");
         }
-        render();
-        showToast(`${worker.name} signed ${type === "in" ? "in" : "out"} at ${formatTime.format(new Date(entry.timestamp))}.`);
+        const data = new TextEncoder().encode(password);
+        const digest = await window.crypto.subtle.digest("SHA-256", data);
+        return Array.from(new Uint8Array(digest), (byte) => byte.toString(16).padStart(2, "0")).join("");
       }
 
       $("todayDate").textContent = new Intl.DateTimeFormat(undefined, {
         weekday: "short", month: "short", day: "numeric", year: "numeric"
       }).format(new Date());
+      $("attendanceNav").addEventListener("click", () => {
+        $("userView").hidden = true;
+        clearSession();
+        renderMode();
+      });
+      $("usersNav").addEventListener("click", () => {
+        $("userView").hidden = false;
+        renderMode();
+      });
       $("addWorkerBtn").addEventListener("click", () => $("workerDialog").showModal());
       $("cancelDialog").addEventListener("click", () => $("workerDialog").close());
-      $("searchInput").addEventListener("input", render);
+      $("searchInput").addEventListener("input", renderAdmin);
       $("workerRows").addEventListener("click", (event) => {
         const button = event.target.closest("button[data-action]");
-        if (button && !button.disabled) recordAttendance(button.dataset.worker, button.dataset.action);
+        if (!button || button.disabled) return;
+        const workerId = button.dataset.worker;
+        const worker = workers.find((item) => item.workerId === workerId);
+        if (!worker) return;
+        const dayEvents = eventsFor(workerId, today);
+        if ((button.dataset.action === "in" && dayEvents.some((entry) => entry.type === "in")) ||
+            (button.dataset.action === "out" && (!dayEvents.some((entry) => entry.type === "in") || dayEvents.some((entry) => entry.type === "out")))) {
+          showToast("This attendance action has already been recorded or is not available yet.");
+          return;
+        }
+        const entry = { workerId, type: button.dataset.action, date: today, timestamp: new Date().toISOString() };
+        events.push(entry);
+        if (!saveStore(EVENTS_KEY, events)) { events.pop(); return; }
+        renderAdmin();
+        showToast(`${worker.name} signed ${entry.type === "in" ? "in" : "out"} at ${formatTime.format(new Date(entry.timestamp))}.`);
       });
       $("connectBtn").addEventListener("click", () => showToast("A secure backend and compatible biometric device are required to enable enrollment."));
 
@@ -343,19 +451,77 @@
           $("workerId").focus();
           return;
         }
-        const worker = { name, workerId, department, enrolled: false };
-        workers.unshift(worker);
-        if (!saveStore(WORKERS_KEY, workers)) {
-          workers.shift();
-          return;
-        }
+        workers.unshift({ name, workerId, department, enrolled: false });
+        if (!saveStore(WORKERS_KEY, workers)) { workers.shift(); return; }
         event.currentTarget.reset();
         $("workerDialog").close();
-        render();
+        renderAdmin();
         showToast(`${name} added to GMAX.`);
       });
 
-      render();
+      $("userForm").addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const data = new FormData(event.currentTarget);
+        const workerId = String(data.get("workerId")).trim();
+        const password = String(data.get("password"));
+        const worker = workers.find((item) => item.workerId.toLowerCase() === workerId.toLowerCase());
+        if (!worker) {
+          showToast("Worker ID not found. Ask an administrator to add you first.");
+          return;
+        }
+        if (users.some((user) => user.workerId.toLowerCase() === worker.workerId.toLowerCase())) {
+          showToast("An account already exists for this worker ID. Use Sign in.");
+          return;
+        }
+        try {
+          const passwordHash = await hashPassword(password);
+          users.push({ workerId: worker.workerId, passwordHash });
+          if (!saveStore(USERS_KEY, users)) { users.pop(); return; }
+          if (!setSession(worker.workerId)) return;
+          renderMode();
+        } catch (error) {
+          console.error("Unable to create user account.", error);
+          showToast(error.message || "Unable to create the account.");
+        }
+      });
+
+      $("signInBtn").addEventListener("click", async () => {
+        const workerId = $("accountWorkerId").value.trim();
+        const password = $("accountPassword").value;
+        if (!workerId || !password) {
+          showToast("Enter your worker ID and password to sign in.");
+          return;
+        }
+        const user = users.find((item) => item.workerId.toLowerCase() === workerId.toLowerCase());
+        if (!user) {
+          showToast("Account not found. Check your details or create an account.");
+          return;
+        }
+        try {
+          const passwordHash = await hashPassword(password);
+          if (passwordHash !== user.passwordHash) {
+            showToast("Incorrect worker ID or password.");
+            return;
+          }
+          if (setSession(user.workerId)) renderMode();
+        } catch (error) {
+          console.error("Unable to sign in.", error);
+          showToast(error.message || "Unable to sign in.");
+        }
+      });
+
+      $("signOutAccountBtn").addEventListener("click", () => {
+        clearSession();
+        $("accountPassword").value = "";
+        renderMode();
+        showToast("You have signed out.");
+      });
+
+      if (activeUserId) {
+        $("userView").hidden = false;
+        if (!users.some((user) => user.workerId.toLowerCase() === activeUserId.toLowerCase())) clearSession();
+      }
+      renderMode();
     })();
   </script>
 </body>
