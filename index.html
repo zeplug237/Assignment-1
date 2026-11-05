@@ -18,6 +18,7 @@
     body { margin: 0; min-width: 320px; }
     button, input, select { font: inherit; }
     button { cursor: pointer; }
+    [hidden] { display: none !important; }
     .sidebar { position: fixed; inset: 0 auto 0 0; width: 235px; padding: 27px 19px; background: #fff; border-right: 1px solid var(--line); }
     .brand { display: flex; align-items: center; gap: 11px; font-size: 20px; font-weight: 800; letter-spacing: -.5px; }
     .brand-mark { display: grid; width: 36px; height: 36px; place-items: center; border-radius: 11px; background: #e9efff; color: var(--blue); }
@@ -36,9 +37,9 @@
     .avatar { display: grid; width: 33px; height: 33px; place-items: center; border-radius: 50%; background: #e8edfb; color: #5265a7; font-size: 11px; font-weight: 750; }
     .stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 15px; margin-bottom: 22px; }
     .stat, .card { border: 1px solid var(--line); border-radius: 12px; background: #fff; box-shadow: 0 10px 28px #1b2c500d; }
-    .stat { min-height: 112px; padding: 17px 19px; }
+    .stat { min-height: 105px; padding: 16px 19px; }
     .stat-label { color: var(--muted); font-size: 12px; font-weight: 600; }
-    .stat-value { margin-top: 8px; font-size: 26px; font-weight: 750; letter-spacing: -.6px; }
+    .stat-value { margin-top: 8px; font-size: 25px; font-weight: 750; letter-spacing: -.6px; }
     .grid { display: grid; grid-template-columns: minmax(0, 1.65fr) minmax(270px, .75fr); gap: 19px; align-items: start; }
     .card { overflow: hidden; }
     .card-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 18px 20px; border-bottom: 1px solid var(--line); }
@@ -78,6 +79,20 @@
     .activity-who { display: flex; align-items: center; gap: 8px; }
     .activity-who .worker-avatar { width: 27px; height: 27px; flex-basis: 27px; }
     .activity-time { color: var(--muted); font-size: 10px; }
+    .section-gap { margin-top: 20px; }
+    .month-picker { height: 34px; padding: 0 8px; border: 1px solid var(--line); border-radius: 7px; background: #fff; color: #52617b; font-size: 11px; }
+    .monthly-summary { padding: 0 20px 18px; color: var(--muted); font-size: 11px; }
+    .chart-list { display: grid; gap: 14px; padding: 18px 20px; }
+    .chart-row { display: grid; grid-template-columns: minmax(90px, 1.1fr) minmax(130px, 2fr) auto; align-items: center; gap: 14px; }
+    .chart-name { overflow: hidden; color: #4e5b73; font-size: 11px; font-weight: 650; text-overflow: ellipsis; white-space: nowrap; }
+    .bar-track { display: flex; height: 12px; overflow: hidden; border-radius: 99px; background: #f1f3f8; }
+    .bar-present { height: 100%; background: #34b784; }
+    .bar-absent { height: 100%; background: #efb45e; }
+    .chart-counts { color: #68748a; font-size: 10px; white-space: nowrap; }
+    .legend { display: flex; flex-wrap: wrap; gap: 14px; padding: 0 20px 17px; color: #68748a; font-size: 10px; }
+    .legend span { display: inline-flex; align-items: center; gap: 6px; }
+    .legend i { width: 8px; height: 8px; border-radius: 2px; background: #34b784; }
+    .legend .absent-key { background: #efb45e; }
     .user-panel { max-width: 720px; margin: 0 auto; }
     .user-form { display: grid; gap: 14px; padding: 22px; }
     .user-form h2 { font-size: 17px; }
@@ -98,7 +113,6 @@
     .toast { position: fixed; right: 20px; bottom: 20px; max-width: min(380px, calc(100vw - 40px)); padding: 12px 15px; border: 1px solid var(--line); border-radius: 9px; background: #fff; box-shadow: 0 10px 28px #1b2c501a; color: #43516b; font-size: 12px; opacity: 0; pointer-events: none; transform: translateY(7px); transition: .2s; }
     .toast.show { opacity: 1; transform: translateY(0); }
     .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
-    [hidden] { display: none !important; }
     @media (max-width: 1050px) {
       .sidebar { width: 200px; } main { margin-left: 200px; padding: 28px 24px; }
       .stats { grid-template-columns: repeat(2, 1fr); } .grid { grid-template-columns: 1fr; }
@@ -110,6 +124,8 @@
       .date { font-size: 10px; } .stats { gap: 9px; margin-bottom: 15px; }
       .stat { min-height: 95px; padding: 13px; } .stat-value { font-size: 23px; }
       .card-header { padding: 15px; } .search { width: calc(100% - 30px); margin: 13px 15px 9px; }
+      .chart-row { grid-template-columns: minmax(70px, .8fr) minmax(80px, 1.3fr) auto; gap: 8px; }
+      .chart-counts { font-size: 9px; }
     }
     @media (max-width: 380px) { .date { display: none; } }
   </style>
@@ -118,9 +134,7 @@
   <aside class="sidebar" aria-label="Main navigation">
     <div class="brand">
       <span class="brand-mark" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-          <path d="M7 3h10M7 21h10M5 6c0 3 2 4 2 6s-2 3-2 6M19 6c0 3-2 4-2 6s2 3 2 6M12 7v10M9 9c0 2 1 2 1 3s-1 1-1 3M15 9c0 2-1 2-1 3s1 1 1 3"/>
-        </svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 3h10M7 21h10M5 6c0 3 2 4 2 6s-2 3-2 6M19 6c0 3-2 4-2 6s2 3 2 6M12 7v10M9 9c0 2 1 2 1 3s-1 1-1 3M15 9c0 2-1 2-1 3s1 1 1 3"/></svg>
       </span>
       GMAX
     </div>
@@ -180,6 +194,21 @@
           </section>
         </div>
       </div>
+
+      <section class="card section-gap" aria-labelledby="monthlyHeading">
+        <div class="card-header">
+          <div><h2 id="monthlyHeading">Monthly user attendance</h2><p class="hint">Present and absent working days for each worker</p></div>
+          <label class="sr-only" for="monthPicker">Select attendance month</label>
+          <input class="month-picker" id="monthPicker" type="month">
+        </div>
+        <p class="monthly-summary" id="monthlySummary"></p>
+        <div class="table-scroll">
+          <table><thead><tr><th>User / worker</th><th>Present days</th><th>Absent days</th><th>Working days</th></tr></thead><tbody id="monthlyRows"></tbody></table>
+          <div class="empty" id="monthlyEmpty">Add workers to see monthly attendance.</div>
+        </div>
+        <div class="chart-list" id="monthlyChart" role="img" aria-label="Monthly present and absent working days per worker"></div>
+        <div class="legend"><span><i></i>Present days</span><span><i class="absent-key"></i>Absent days</span></div>
+      </section>
     </section>
 
     <section id="userView" hidden>
@@ -188,24 +217,15 @@
         <form class="user-form" id="userForm">
           <div class="field"><label for="accountWorkerId">Worker ID</label><input id="accountWorkerId" name="workerId" required maxlength="32" autocomplete="username" placeholder="Your assigned worker ID"></div>
           <div class="field"><label for="accountPassword">Password</label><input id="accountPassword" name="password" type="password" required minlength="8" autocomplete="new-password" placeholder="At least 8 characters"></div>
-          <div class="user-actions">
-            <button class="btn" type="submit" id="createAccountBtn">Create user account</button>
-            <button class="btn secondary" type="button" id="signInBtn">Sign in</button>
-          </div>
-          <div class="security-note">Your account is linked to a worker record. User accounts can only view attendance; they cannot add workers or change attendance. This standalone demo stores data in this browser and is not secure authentication—use a server with access controls before deploying.</div>
+          <div class="user-actions"><button class="btn" type="submit">Create user account</button><button class="btn secondary" type="button" id="signInBtn">Sign in</button></div>
+          <div class="security-note">User accounts are read-only and can only view attendance. This standalone demo stores accounts in this browser; use a secure server and access controls before deploying.</div>
         </form>
       </div>
       <section class="user-view card" id="personalAttendance" hidden>
-        <div class="user-view-head">
-          <div><h2 id="personalName">My attendance</h2><p class="hint" id="personalWorkerId"></p></div>
-          <button class="btn secondary" id="signOutAccountBtn" type="button">Sign out</button>
-        </div>
+        <div class="user-view-head"><div><h2 id="personalName">My attendance</h2><p class="hint" id="personalWorkerId"></p></div><button class="btn secondary" id="signOutAccountBtn" type="button">Sign out</button></div>
         <div class="user-view-body">
           <p class="table-note">Your attendance history is view-only.</p>
-          <div class="table-scroll">
-            <table><thead><tr><th>Date</th><th>Sign-in time</th><th>Sign-out time</th></tr></thead><tbody id="personalRows"></tbody></table>
-            <div class="empty" id="personalEmpty">No attendance records yet.</div>
-          </div>
+          <div class="table-scroll"><table><thead><tr><th>Date</th><th>Sign-in time</th><th>Sign-out time</th></tr></thead><tbody id="personalRows"></tbody></table><div class="empty" id="personalEmpty">No attendance records yet.</div></div>
         </div>
       </section>
     </section>
@@ -323,13 +343,10 @@
           const signOut = dayEvents.find((event) => event.type === "out");
           const actions = `<button class="row-action" type="button" data-action="in" data-worker="${escapeHtml(worker.workerId)}" ${signIn ? "disabled" : ""}>Sign in</button>
             <button class="row-action" type="button" data-action="out" data-worker="${escapeHtml(worker.workerId)}" ${!signIn || signOut ? "disabled" : ""}>Sign out</button>`;
-          return `<tr>
-            <td><div class="worker"><span class="worker-avatar">${escapeHtml(initials(worker.name))}</span><span>${escapeHtml(worker.name)}<span class="sub">${escapeHtml(worker.workerId)}</span></span></div></td>
+          return `<tr><td><div class="worker"><span class="worker-avatar">${escapeHtml(initials(worker.name))}</span><span>${escapeHtml(worker.name)}<span class="sub">${escapeHtml(worker.workerId)}</span></span></div></td>
             <td>${escapeHtml(worker.department)}</td>
             <td class="time-cell ${signIn ? "" : "missing"}">${signIn ? formatTime.format(new Date(signIn.timestamp)) : "—"}</td>
-            <td class="time-cell ${signOut ? "" : "missing"}">${signOut ? formatTime.format(new Date(signOut.timestamp)) : "—"}</td>
-            <td>${actions}</td>
-          </tr>`;
+            <td class="time-cell ${signOut ? "" : "missing"}">${signOut ? formatTime.format(new Date(signOut.timestamp)) : "—"}</td><td>${actions}</td></tr>`;
         }).join("");
         $("emptyState").hidden = filtered.length > 0;
         $("emptyState").textContent = workers.length && query ? "No workers match your search." : "No workers found. Add your first worker to get started.";
@@ -346,6 +363,52 @@
           return `<div class="activity-row"><span class="activity-who"><span class="worker-avatar">${escapeHtml(initials(worker.name))}</span>${escapeHtml(worker.name)} ${event.type === "in" ? "signed in" : "signed out"}</span><span class="activity-time">${formatTime.format(new Date(event.timestamp))}</span></div>`;
         }).join("");
         $("activityEmpty").hidden = recent.length > 0;
+        renderMonthly();
+      }
+
+      function selectedMonth() {
+        const value = $("monthPicker").value;
+        const parts = value.split("-").map(Number);
+        return { year: parts[0], month: parts[1] };
+      }
+
+      function getMonthlyStats(worker, year, month) {
+        const now = new Date();
+        const lastDay = new Date(year, month, 0).getDate();
+        const selectedMonthIsCurrent = year === now.getFullYear() && month === now.getMonth() + 1;
+        const elapsedDays = selectedMonthIsCurrent ? now.getDate() : (new Date(year, month - 1, 1) > now ? 0 : lastDay);
+        let workingDays = 0;
+        let presentDays = 0;
+        for (let day = 1; day <= elapsedDays; day++) {
+          const date = new Date(year, month - 1, day);
+          const weekday = date.getDay();
+          if (weekday === 0 || weekday === 6) continue;
+          workingDays++;
+          const key = dateKey(date);
+          if (events.some((event) => event.workerId === worker.workerId && event.date === key && event.type === "in")) {
+            presentDays++;
+          }
+        }
+        return { presentDays, absentDays: workingDays - presentDays, workingDays };
+      }
+
+      function renderMonthly() {
+        const { year, month } = selectedMonth();
+        if (!year || !month) return;
+        const rows = workers.map((worker) => ({ worker, ...getMonthlyStats(worker, year, month) }));
+        const totalWorkingDays = rows.length ? rows[0].workingDays : 0;
+        $("monthlySummary").textContent = `${new Intl.DateTimeFormat(undefined, { month: "long", year: "numeric" }).format(new Date(year, month - 1, 1))} · Weekdays only (Monday–Friday), up to today for the current month.`;
+        $("monthlyRows").innerHTML = rows.map(({ worker, presentDays, absentDays, workingDays }) =>
+          `<tr><td>${escapeHtml(worker.name)}<span class="sub">${escapeHtml(worker.workerId)}</span></td><td>${presentDays}</td><td>${absentDays}</td><td>${workingDays}</td></tr>`
+        ).join("");
+        $("monthlyEmpty").hidden = workers.length > 0;
+        $("monthlyChart").innerHTML = rows.map(({ worker, presentDays, absentDays, workingDays }) => {
+          const presentWidth = workingDays ? presentDays / workingDays * 100 : 0;
+          const absentWidth = workingDays ? absentDays / workingDays * 100 : 0;
+          return `<div class="chart-row"><span class="chart-name" title="${escapeHtml(worker.name)}">${escapeHtml(worker.name)}</span><div class="bar-track" role="img" aria-label="${escapeHtml(worker.name)}: ${presentDays} present, ${absentDays} absent of ${workingDays} weekdays"><span class="bar-present" style="width:${presentWidth}%"></span><span class="bar-absent" style="width:${absentWidth}%"></span></div><span class="chart-counts">${presentDays} / ${absentDays}</span></div>`;
+        }).join("");
+        $("monthlyChart").hidden = workers.length === 0;
+        $("monthlySummary").hidden = workers.length === 0;
       }
 
       function renderPersonalAttendance(workerId) {
@@ -363,24 +426,21 @@
           const dayEvents = eventsFor(worker.workerId, date);
           const signIn = dayEvents.find((entry) => entry.type === "in");
           const signOut = dayEvents.find((entry) => entry.type === "out");
-          const parsedDate = new Date(`${date}T00:00:00`);
-          return `<tr><td>${formatDate(parsedDate)}</td>
-            <td class="time-cell">${signIn ? formatTime.format(new Date(signIn.timestamp)) : "—"}</td>
-            <td class="time-cell">${signOut ? formatTime.format(new Date(signOut.timestamp)) : "—"}</td></tr>`;
+          return `<tr><td>${formatDate(new Date(`${date}T00:00:00`))}</td><td class="time-cell">${signIn ? formatTime.format(new Date(signIn.timestamp)) : "—"}</td><td class="time-cell">${signOut ? formatTime.format(new Date(signOut.timestamp)) : "—"}</td></tr>`;
         }).join("");
         $("personalEmpty").hidden = dates.length > 0;
       }
 
       function renderMode() {
-        const isUser = $("userView").hidden === false && Boolean(activeUserId);
-        $("adminView").hidden = isUser || !$("userView").hidden;
+        const usersSelected = !$("userView").hidden;
+        const isUser = usersSelected && Boolean(activeUserId);
+        $("adminView").hidden = usersSelected;
         $("userAccess").hidden = isUser;
         $("personalAttendance").hidden = !isUser;
-        $("attendanceNav").classList.toggle("active", $("userView").hidden);
-        $("usersNav").classList.toggle("active", !$("userView").hidden);
-        $("attendanceNav").toggleAttribute("aria-current", $("userView").hidden);
-        $("usersNav").toggleAttribute("aria-current", !$("userView").hidden);
-
+        $("attendanceNav").classList.toggle("active", !usersSelected);
+        $("usersNav").classList.toggle("active", usersSelected);
+        $("attendanceNav").toggleAttribute("aria-current", !usersSelected);
+        $("usersNav").toggleAttribute("aria-current", usersSelected);
         if (isUser) {
           const worker = workers.find((item) => item.workerId.toLowerCase() === activeUserId.toLowerCase());
           $("profileName").textContent = worker ? worker.name : "User";
@@ -390,32 +450,23 @@
         } else {
           $("profileName").textContent = "Admin";
           $("profileAvatar").textContent = "AD";
-          $("pageTitle").textContent = $("userView").hidden ? "Attendance" : "Users";
-          renderAdmin();
+          $("pageTitle").textContent = usersSelected ? "Users" : "Attendance";
+          if (!usersSelected) renderAdmin();
         }
       }
 
       async function hashPassword(password) {
-        if (!window.crypto || !window.crypto.subtle) {
-          throw new Error("Secure password hashing is unavailable. Open this page over HTTPS or localhost.");
-        }
+        if (!window.crypto || !window.crypto.subtle) throw new Error("Secure password hashing is unavailable. Open this page over HTTPS or localhost.");
         const data = new TextEncoder().encode(password);
         const digest = await window.crypto.subtle.digest("SHA-256", data);
         return Array.from(new Uint8Array(digest), (byte) => byte.toString(16).padStart(2, "0")).join("");
       }
 
-      $("todayDate").textContent = new Intl.DateTimeFormat(undefined, {
-        weekday: "short", month: "short", day: "numeric", year: "numeric"
-      }).format(new Date());
-      $("attendanceNav").addEventListener("click", () => {
-        $("userView").hidden = true;
-        clearSession();
-        renderMode();
-      });
-      $("usersNav").addEventListener("click", () => {
-        $("userView").hidden = false;
-        renderMode();
-      });
+      $("todayDate").textContent = new Intl.DateTimeFormat(undefined, { weekday: "short", month: "short", day: "numeric", year: "numeric" }).format(new Date());
+      $("monthPicker").value = `${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, "0")}`;
+      $("monthPicker").addEventListener("change", renderMonthly);
+      $("attendanceNav").addEventListener("click", () => { $("userView").hidden = true; clearSession(); renderMode(); });
+      $("usersNav").addEventListener("click", () => { $("userView").hidden = false; renderMode(); });
       $("addWorkerBtn").addEventListener("click", () => $("workerDialog").showModal());
       $("cancelDialog").addEventListener("click", () => $("workerDialog").close());
       $("searchInput").addEventListener("input", renderAdmin);
@@ -465,10 +516,7 @@
         const workerId = String(data.get("workerId")).trim();
         const password = String(data.get("password"));
         const worker = workers.find((item) => item.workerId.toLowerCase() === workerId.toLowerCase());
-        if (!worker) {
-          showToast("Worker ID not found. Ask an administrator to add you first.");
-          return;
-        }
+        if (!worker) { showToast("Worker ID not found. Ask an administrator to add you first."); return; }
         if (users.some((user) => user.workerId.toLowerCase() === worker.workerId.toLowerCase())) {
           showToast("An account already exists for this worker ID. Use Sign in.");
           return;
@@ -477,8 +525,7 @@
           const passwordHash = await hashPassword(password);
           users.push({ workerId: worker.workerId, passwordHash });
           if (!saveStore(USERS_KEY, users)) { users.pop(); return; }
-          if (!setSession(worker.workerId)) return;
-          renderMode();
+          if (setSession(worker.workerId)) renderMode();
         } catch (error) {
           console.error("Unable to create user account.", error);
           showToast(error.message || "Unable to create the account.");
@@ -488,21 +535,12 @@
       $("signInBtn").addEventListener("click", async () => {
         const workerId = $("accountWorkerId").value.trim();
         const password = $("accountPassword").value;
-        if (!workerId || !password) {
-          showToast("Enter your worker ID and password to sign in.");
-          return;
-        }
+        if (!workerId || !password) { showToast("Enter your worker ID and password to sign in."); return; }
         const user = users.find((item) => item.workerId.toLowerCase() === workerId.toLowerCase());
-        if (!user) {
-          showToast("Account not found. Check your details or create an account.");
-          return;
-        }
+        if (!user) { showToast("Account not found. Check your details or create an account."); return; }
         try {
           const passwordHash = await hashPassword(password);
-          if (passwordHash !== user.passwordHash) {
-            showToast("Incorrect worker ID or password.");
-            return;
-          }
+          if (passwordHash !== user.passwordHash) { showToast("Incorrect worker ID or password."); return; }
           if (setSession(user.workerId)) renderMode();
         } catch (error) {
           console.error("Unable to sign in.", error);
@@ -517,9 +555,10 @@
         showToast("You have signed out.");
       });
 
-      if (activeUserId) {
+      if (activeUserId && users.some((user) => user.workerId.toLowerCase() === activeUserId.toLowerCase())) {
         $("userView").hidden = false;
-        if (!users.some((user) => user.workerId.toLowerCase() === activeUserId.toLowerCase())) clearSession();
+      } else {
+        clearSession();
       }
       renderMode();
     })();
